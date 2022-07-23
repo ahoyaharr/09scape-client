@@ -104,11 +104,11 @@ public class Camera {
 
 	@OriginalMember(owner = "client!gn", name = "b", descriptor = "(B)V")
 	public static void clampCameraAngle() {
-		if (pitchTarget < 128) {
-			pitchTarget = 128;
+		if (pitchTarget < 20) {
+			pitchTarget = 20;
 		}
-		if (pitchTarget > 383) {
-			pitchTarget = 383;
+		if (pitchTarget > 512) {
+			pitchTarget = 512;
 		}
 		yawTarget = mod(yawTarget, 2047.0d);
 		@Pc(33) int local33 = cameraX >> 7;
