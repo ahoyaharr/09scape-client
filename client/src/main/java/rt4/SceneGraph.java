@@ -6,10 +6,11 @@ import org.openrs2.deob.annotation.OriginalMember;
 import org.openrs2.deob.annotation.Pc;
 
 public class SceneGraph {
+	static final byte MAP_SIZE = 127;
 	@OriginalMember(owner = "client!bb", name = "g", descriptor = "[[[B")
-	public static final byte[][][] tileFlags = new byte[4][104][104];
+	public static final byte[][][] tileFlags = new byte[4][MAP_SIZE][MAP_SIZE];
 	@OriginalMember(owner = "client!mi", name = "Y", descriptor = "[[[Lclient!ih;")
-	public static final LinkedList[][][] objStacks = new LinkedList[4][104][104];
+	public static final LinkedList[][][] objStacks = new LinkedList[4][MAP_SIZE][MAP_SIZE];
 	@OriginalMember(owner = "client!te", name = "B", descriptor = "[I")
 	public static final int[] anIntArray469 = new int[]{0, -1, 0, 1};
 	@OriginalMember(owner = "client!fb", name = "q", descriptor = "[I")
@@ -330,24 +331,24 @@ public class SceneGraph {
 
 	@OriginalMember(owner = "client!pl", name = "a", descriptor = "(ZI)V")
 	public static void load(@OriginalArg(0) boolean underwater) {
-		rowWeightedHue = new int[104];
-		rowSaturation = new int[104];
+		rowWeightedHue = new int[MAP_SIZE];
+		rowSaturation = new int[MAP_SIZE];
 		firstVisibleLevel = 99;
-		rowChroma = new int[104];
+		rowChroma = new int[MAP_SIZE];
 		@Pc(14) byte plane;
 		if (underwater) {
 			plane = 1;
 		} else {
 			plane = 4;
 		}
-		tileShapes = new byte[plane][104][104];
-		rowCount = new int[104];
-		anIntArrayArrayArray6 = new int[plane][105][105];
-		aByteArrayArrayArray9 = new byte[plane][105][105];
-		tileOverlays = new byte[plane][104][104];
-		rowLightness = new int[104];
-		tileAngles = new byte[plane][104][104];
-		tileUnderlays = new byte[plane][104][104];
+		tileShapes = new byte[plane][MAP_SIZE][MAP_SIZE];
+		rowCount = new int[MAP_SIZE];
+		anIntArrayArrayArray6 = new int[plane][MAP_SIZE + 1][MAP_SIZE + 1];
+		aByteArrayArrayArray9 = new byte[plane][MAP_SIZE + 1][MAP_SIZE + 1];
+		tileOverlays = new byte[plane][MAP_SIZE][MAP_SIZE];
+		rowLightness = new int[MAP_SIZE];
+		tileAngles = new byte[plane][MAP_SIZE][MAP_SIZE];
+		tileUnderlays = new byte[plane][MAP_SIZE][MAP_SIZE];
 	}
 
 	@OriginalMember(owner = "client!ib", name = "b", descriptor = "(I)V")
@@ -457,7 +458,7 @@ public class SceneGraph {
 	@OriginalMember(owner = "client!wj", name = "a", descriptor = "(IIZLclient!wa;IIBII)V")
 	public static void readTile(@OriginalArg(0) int arg0, @OriginalArg(1) int arg1, @OriginalArg(2) boolean arg2, @OriginalArg(3) Buffer buffer, @OriginalArg(4) int z, @OriginalArg(5) int x, @OriginalArg(7) int angle, @OriginalArg(8) int level) {
 		@Pc(32) int opcode;
-		if (x < 0 || x >= 104 || z < 0 || z >= 104) {
+		if (x < 0 || x >= MAP_SIZE || z < 0 || z >= MAP_SIZE) {
 			while (true) {
 				opcode = buffer.g1();
 				if (opcode == 0) {
@@ -643,8 +644,8 @@ public class SceneGraph {
 
 	@OriginalMember(owner = "client!cd", name = "a", descriptor = "(IIIIZ)V")
 	public static void init(@OriginalArg(3) int tileVisibility, @OriginalArg(4) boolean hasUnderWaterMap) {
-		width = 104;
-		length = 104;
+		width = MAP_SIZE;
+		length = MAP_SIZE;
 		visibility = tileVisibility;
 		surfaceGroundTiles = new Tile[4][width][length];
 		surfaceTileHeights = new int[4][width + 1][length + 1];
@@ -778,8 +779,8 @@ public class SceneGraph {
 		@Pc(15) int x;
 		if (!underwater) {
 			for (level = 0; level < 4; level++) {
-				for (x = 0; x < 104; x++) {
-					for (@Pc(22) int z = 0; z < 104; z++) {
+				for (x = 0; x < MAP_SIZE; x++) {
+					for (@Pc(22) int z = 0; z < MAP_SIZE; z++) {
 						if ((tileFlags[level][x][z] & 0x1) == 1) {
 							@Pc(43) int transformedLevel = level;
 							if ((tileFlags[1][x][z] & 0x2) == 2) {
@@ -814,8 +815,8 @@ public class SceneGraph {
 			levels = 4;
 		}
 		level = anInt2293 >> 2 << 10;
-		@Pc(142) int[][] local142 = new int[104][104];
-		@Pc(146) int[][] local146 = new int[104][104];
+		@Pc(142) int[][] local142 = new int[MAP_SIZE][MAP_SIZE];
+		@Pc(146) int[][] local146 = new int[MAP_SIZE][MAP_SIZE];
 		x = anInt4272 >> 1;
 		@Pc(152) int local152;
 		@Pc(168) int local168;
@@ -878,18 +879,18 @@ public class SceneGraph {
 					}
 				}
 			}
-			for (local168 = 0; local168 < 104; local168++) {
+			for (local168 = 0; local168 < MAP_SIZE; local168++) {
 				rowWeightedHue[local168] = 0;
 				rowSaturation[local168] = 0;
 				rowLightness[local168] = 0;
 				rowChroma[local168] = 0;
 				rowCount[local168] = 0;
 			}
-			for (local168 = -5; local168 < 104; local168++) {
-				for (local173 = 0; local173 < 104; local173++) {
+			for (local168 = -5; local168 < MAP_SIZE; local168++) {
+				for (local173 = 0; local173 < MAP_SIZE; local173++) {
 					local178 = local168 + 5;
 					@Pc(729) int local729;
-					if (local178 < 104) {
+					if (local178 < MAP_SIZE) {
 						overlay = tileUnderlays[local152][local178][local173] & 0xFF;
 						if (overlay > 0) {
 							@Pc(693) FluType type = FluTypeList.get(overlay - 1);
@@ -919,9 +920,9 @@ public class SceneGraph {
 					local178 = 0;
 					local200 = 0;
 					local202 = 0;
-					for (local209 = -5; local209 < 104; local209++) {
+					for (local209 = -5; local209 < MAP_SIZE; local209++) {
 						local349 = local209 + 5;
-						if (local349 < 104) {
+						if (local349 < MAP_SIZE) {
 							local178 += rowSaturation[local349];
 							local202 += rowCount[local349];
 							local173 += rowWeightedHue[local349];
@@ -991,7 +992,7 @@ public class SceneGraph {
 								if (GlRenderer.enabled && !underwater && anIntArrayArray11 != null && local152 == 0) {
 									for (local322 = local168 - 1; local322 <= local168 + 1; local322++) {
 										for (@Pc(1794) int local1794 = local173 - 1; local1794 <= local173 + 1; local1794++) {
-											if ((local322 != local168 || local173 != local1794) && local322 >= 0 && local322 < 104 && local1794 >= 0 && local1794 < 104) {
+											if ((local322 != local168 || local173 != local1794) && local322 >= 0 && local322 < MAP_SIZE && local1794 >= 0 && local1794 < MAP_SIZE) {
 												@Pc(1834) int local1834 = tileOverlays[local152][local322][local1794] & 0xFF;
 												if (local1834 != 0) {
 													@Pc(1842) FloType local1842 = FloTypeList.method4395(local1834 - 1);
@@ -1018,7 +1019,7 @@ public class SceneGraph {
 										label737:
 										for (texture = local168 - 1; texture <= local168 + 1; texture++) {
 											for (local1301 = local173 - 1; local1301 <= local173 + 1; local1301++) {
-												if ((local168 != texture || local1301 != local173) && texture >= 0 && texture < 104 && local1301 >= 0 && local1301 < 104) {
+												if ((local168 != texture || local1301 != local173) && texture >= 0 && texture < MAP_SIZE && local1301 >= 0 && local1301 < MAP_SIZE) {
 													local1353 = tileOverlays[local152][texture][local1301] & 0xFF;
 													if (local1353 != 0) {
 														@Pc(1366) FloType local1366 = FloTypeList.method4395(local1353 - 1);
@@ -1076,10 +1077,10 @@ public class SceneGraph {
 				}
 			}
 			if (GlRenderer.enabled) {
-				@Pc(1888) float[][] local1888 = new float[105][105];
+				@Pc(1888) float[][] local1888 = new float[MAP_SIZE + 1][MAP_SIZE + 1];
 				@Pc(1892) int[][] local1892 = tileHeights[local152];
-				@Pc(1896) float[][] local1896 = new float[105][105];
-				@Pc(1900) float[][] local1900 = new float[105][105];
+				@Pc(1896) float[][] local1896 = new float[MAP_SIZE + 1][MAP_SIZE + 1];
+				@Pc(1900) float[][] local1900 = new float[MAP_SIZE + 1][MAP_SIZE + 1];
 				local200 = 1;
 				while (true) {
 					if (local200 > 103) {
@@ -1124,22 +1125,22 @@ public class SceneGraph {
 			return;
 		}
 		@Pc(2204) int local2204;
-		for (local152 = 0; local152 < 104; local152++) {
-			for (local2204 = 0; local2204 < 104; local2204++) {
+		for (local152 = 0; local152 < MAP_SIZE; local152++) {
+			for (local2204 = 0; local2204 < MAP_SIZE; local2204++) {
 				if ((tileFlags[1][local152][local2204] & 0x2) == 2) {
 					method3884(local152, local2204);
 				}
 			}
 		}
 		for (local152 = 0; local152 < 4; local152++) {
-			for (local2204 = 0; local2204 <= 104; local2204++) {
-				for (local168 = 0; local168 <= 104; local168++) {
+			for (local2204 = 0; local2204 <= MAP_SIZE; local2204++) {
+				for (local168 = 0; local168 <= MAP_SIZE; local168++) {
 					if ((anIntArrayArrayArray6[local152][local168][local2204] & 0x1) != 0) {
 						local200 = local152;
 						for (local173 = local2204; local173 > 0 && (anIntArrayArrayArray6[local152][local168][local173 - 1] & 0x1) != 0; local173--) {
 						}
 						overlay = local152;
-						for (local178 = local2204; local178 < 104 && (anIntArrayArrayArray6[local152][local168][local178 + 1] & 0x1) != 0; local178++) {
+						for (local178 = local2204; local178 < MAP_SIZE && (anIntArrayArrayArray6[local152][local168][local178 + 1] & 0x1) != 0; local178++) {
 						}
 						label454:
 						while (overlay > 0) {
@@ -1176,7 +1177,7 @@ public class SceneGraph {
 						}
 						local200 = local152;
 						overlay = local152;
-						for (local178 = local168; local178 < 104 && (anIntArrayArrayArray6[local152][local178 + 1][local2204] & 0x2) != 0; local178++) {
+						for (local178 = local168; local178 < MAP_SIZE && (anIntArrayArrayArray6[local152][local178 + 1][local2204] & 0x2) != 0; local178++) {
 						}
 						label508:
 						while (overlay > 0) {
@@ -1213,7 +1214,7 @@ public class SceneGraph {
 						local178 = local168;
 						for (overlay = local2204; overlay > 0 && (anIntArrayArrayArray6[local152][local168][overlay - 1] & 0x4) != 0; overlay--) {
 						}
-						for (local200 = local2204; local200 < 104 && (anIntArrayArrayArray6[local152][local168][local200 + 1] & 0x4) != 0; local200++) {
+						for (local200 = local2204; local200 < MAP_SIZE && (anIntArrayArrayArray6[local152][local168][local200 + 1] & 0x4) != 0; local200++) {
 						}
 						label562:
 						while (local173 > 0) {
@@ -1225,7 +1226,7 @@ public class SceneGraph {
 							local173--;
 						}
 						label551:
-						while (local178 < 104) {
+						while (local178 < MAP_SIZE) {
 							for (local202 = overlay; local202 <= local200; local202++) {
 								if ((anIntArrayArrayArray6[local152][local178 + 1][local202] & 0x4) == 0) {
 									break label551;
@@ -1467,7 +1468,7 @@ public class SceneGraph {
 			if (scenery != null) {
 				local100 = scenery.entity;
 			}
-			if (type.anInt4435 != 0 && type.width + x < 104 && type.width + z < 104 && x + type.length < 104 && z + type.length < 104) {
+			if (type.anInt4435 != 0 && type.width + x < MAP_SIZE && type.width + z < MAP_SIZE && x + type.length < MAP_SIZE && z + type.length < MAP_SIZE) {
 				collision.unflagScenery(x, type.width, type.aBoolean207, angle, type.length, z);
 			}
 		} else if (arg3 == 3) {
@@ -2411,7 +2412,7 @@ public class SceneGraph {
 		}
 		@Pc(103) int local103;
 		@Pc(112) int local112;
-		if (arg7 + local84 <= 104) {
+		if (arg7 + local84 <= MAP_SIZE) {
 			local103 = arg7 + (local84 >> 1);
 			local112 = arg7 + (local84 + 1 >> 1);
 		} else {
@@ -2420,7 +2421,7 @@ public class SceneGraph {
 		}
 		@Pc(129) int local129;
 		@Pc(133) int local133;
-		if (local81 + arg8 > 104) {
+		if (local81 + arg8 > MAP_SIZE) {
 			local129 = arg8;
 			local133 = arg8 + 1;
 		} else {
@@ -3531,7 +3532,7 @@ public class SceneGraph {
 
 	@OriginalMember(owner = "client!pi", name = "a", descriptor = "([[[B[[B[[B[[I[[F[[I[[B[[B[[FI[[F[[I[[I[[II)[Lclient!hg;")
 	public static GlTile[] method3501(@OriginalArg(0) byte[][][] arg0, @OriginalArg(1) byte[][] arg1, @OriginalArg(2) byte[][] arg2, @OriginalArg(3) int[][] arg3, @OriginalArg(4) float[][] arg4, @OriginalArg(5) int[][] arg5, @OriginalArg(6) byte[][] arg6, @OriginalArg(7) byte[][] arg7, @OriginalArg(8) float[][] arg8, @OriginalArg(9) int arg9, @OriginalArg(10) float[][] arg10, @OriginalArg(11) int[][] arg11, @OriginalArg(12) int[][] arg12, @OriginalArg(13) int[][] arg13) {
-		@Pc(9) int[][] local9 = new int[105][105];
+		@Pc(9) int[][] local9 = new int[MAP_SIZE + 1][MAP_SIZE + 1];
 		@Pc(16) int local16;
 		for (@Pc(11) int local11 = 1; local11 <= 103; local11++) {
 			for (local16 = 1; local16 <= 103; local16++) {
@@ -5020,33 +5021,33 @@ public class SceneGraph {
 		@Pc(10) int local10;
 		for (local3 = arg1; local3 <= arg3 + arg1; local3++) {
 			for (local10 = arg2; local10 <= arg4 + arg2; local10++) {
-				if (local10 >= 0 && local10 < 104 && local3 >= 0 && local3 < 104) {
+				if (local10 >= 0 && local10 < MAP_SIZE && local3 >= 0 && local3 < MAP_SIZE) {
 					aByteArrayArrayArray9[arg0][local10][local3] = 127;
 				}
 			}
 		}
 		for (local3 = arg1; local3 < arg3 + arg1; local3++) {
 			for (local10 = arg2; local10 < arg2 + arg4; local10++) {
-				if (local10 >= 0 && local10 < 104 && local3 >= 0 && local3 < 104) {
+				if (local10 >= 0 && local10 < MAP_SIZE && local3 >= 0 && local3 < MAP_SIZE) {
 					tileHeights[arg0][local10][local3] = arg0 <= 0 ? 0 : tileHeights[arg0 - 1][local10][local3];
 				}
 			}
 		}
-		if (arg2 > 0 && arg2 < 104) {
+		if (arg2 > 0 && arg2 < MAP_SIZE) {
 			for (local3 = arg1 + 1; local3 < arg1 + arg3; local3++) {
-				if (local3 >= 0 && local3 < 104) {
+				if (local3 >= 0 && local3 < MAP_SIZE) {
 					tileHeights[arg0][arg2][local3] = tileHeights[arg0][arg2 - 1][local3];
 				}
 			}
 		}
-		if (arg1 > 0 && arg1 < 104) {
+		if (arg1 > 0 && arg1 < MAP_SIZE) {
 			for (local3 = arg2 + 1; local3 < arg2 + arg4; local3++) {
-				if (local3 >= 0 && local3 < 104) {
+				if (local3 >= 0 && local3 < MAP_SIZE) {
 					tileHeights[arg0][local3][arg1] = tileHeights[arg0][local3][arg1 - 1];
 				}
 			}
 		}
-		if (arg2 < 0 || arg1 < 0 || arg2 >= 104 || arg1 >= 104) {
+		if (arg2 < 0 || arg1 < 0 || arg2 >= MAP_SIZE || arg1 >= MAP_SIZE) {
 			return;
 		}
 		if (arg0 == 0) {
@@ -5113,26 +5114,26 @@ public class SceneGraph {
 					local243 = arg4;
 					if (arg4 < 0) {
 						local243 = 0;
-					} else if (arg4 >= 104) {
-						local243 = 104;
+					} else if (arg4 >= MAP_SIZE) {
+						local243 = MAP_SIZE;
 					}
 					local190 = arg3;
 					if (arg3 < 0) {
 						local190 = 0;
-					} else if (arg3 >= 104) {
-						local190 = 104;
+					} else if (arg3 >= MAP_SIZE) {
+						local190 = MAP_SIZE;
 					}
 					local188 = arg4 + 64;
 					local194 = arg3 + 64;
 					if (local194 < 0) {
 						local194 = 0;
-					} else if (local194 >= 104) {
-						local194 = 104;
+					} else if (local194 >= MAP_SIZE) {
+						local194 = MAP_SIZE;
 					}
 					if (local188 < 0) {
 						local188 = 0;
-					} else if (local188 >= 104) {
-						local188 = 104;
+					} else if (local188 >= MAP_SIZE) {
+						local188 = MAP_SIZE;
 					}
 					while (local243 < local188) {
 						while (local190 < local194) {
@@ -5147,7 +5148,7 @@ public class SceneGraph {
 							@Pc(305) byte local305 = local95.g1b();
 							for (local194 = local243 + arg4; local194 < arg4 + local243 + 4; local194++) {
 								for (@Pc(320) int local320 = arg3 + local188; local320 < arg3 + local188 + 4; local320++) {
-									if (local194 >= 0 && local194 < 104 && local320 >= 0 && local320 < 104) {
+									if (local194 >= 0 && local194 < MAP_SIZE && local320 >= 0 && local320 < MAP_SIZE) {
 										aByteArrayArrayArray13[local117][local194][local320] = local305;
 									}
 								}
@@ -5160,24 +5161,24 @@ public class SceneGraph {
 					local194 = arg3 + 64;
 					if (local188 < 0) {
 						local188 = 0;
-					} else if (local188 >= 104) {
-						local188 = 104;
+					} else if (local188 >= MAP_SIZE) {
+						local188 = MAP_SIZE;
 					}
 					if (arg3 < 0) {
 						local190 = 0;
-					} else if (arg3 >= 104) {
-						local190 = 104;
+					} else if (arg3 >= MAP_SIZE) {
+						local190 = MAP_SIZE;
 					}
 					if (local194 < 0) {
 						local194 = 0;
-					} else if (local194 >= 104) {
-						local194 = 104;
+					} else if (local194 >= MAP_SIZE) {
+						local194 = MAP_SIZE;
 					}
 					local243 = arg4;
 					if (arg4 < 0) {
 						local243 = 0;
-					} else if (arg4 >= 104) {
-						local243 = 104;
+					} else if (arg4 >= MAP_SIZE) {
+						local243 = MAP_SIZE;
 					}
 					while (local188 > local243) {
 						while (local190 < local194) {
@@ -5232,7 +5233,7 @@ public class SceneGraph {
 					local529.x += arg4 << 7;
 					local194 = local529.z >> 7;
 					local190 = local529.x >> 7;
-					if (local190 >= 0 && local194 >= 0 && local190 < 104 && local194 < 104) {
+					if (local190 >= 0 && local194 >= 0 && local190 < MAP_SIZE && local194 < MAP_SIZE) {
 						local529.aBoolean125 = (tileFlags[1][local190][local194] & 0x2) != 0;
 						local529.y = tileHeights[local529.level][local190][local194] - local529.y;
 						LightingManager.method2389(local529);
@@ -5309,24 +5310,24 @@ public class SceneGraph {
 						local255 = arg4 + 7;
 						if (local255 < 0) {
 							local255 = 0;
-						} else if (local255 >= 104) {
-							local255 = 104;
+						} else if (local255 >= MAP_SIZE) {
+							local255 = MAP_SIZE;
 						}
 						if (local237 < 0) {
 							local237 = 0;
-						} else if (local237 >= 104) {
-							local237 = 104;
+						} else if (local237 >= MAP_SIZE) {
+							local237 = MAP_SIZE;
 						}
 						local417 = arg4;
 						if (arg4 < 0) {
 							local417 = 0;
-						} else if (arg4 >= 104) {
-							local417 = 104;
+						} else if (arg4 >= MAP_SIZE) {
+							local417 = MAP_SIZE;
 						}
 						if (arg1 < 0) {
 							local232 = 0;
-						} else if (arg1 >= 104) {
-							local232 = 104;
+						} else if (arg1 >= MAP_SIZE) {
+							local232 = MAP_SIZE;
 						}
 						while (local237 > local232) {
 							while (local417 < local255) {
@@ -5346,7 +5347,7 @@ public class SceneGraph {
 										if (local255 >= arg8 && local255 < arg8 + 8 && local266 >= arg7 && arg7 + 8 > arg7) {
 											local316 = arg1 + rotateX(arg0, local266 & 0x7, local255 & 0x7);
 											@Pc(328) int local328 = rotateZ(arg0, local255 & 0x7, local266 & 0x7) + arg4;
-											if (local316 >= 0 && local316 < 104 && local328 >= 0 && local328 < 104) {
+											if (local316 >= 0 && local316 < MAP_SIZE && local328 >= 0 && local328 < MAP_SIZE) {
 												aByteArrayArrayArray13[arg2][local316][local328] = local246;
 											}
 										}
@@ -5398,7 +5399,7 @@ public class SceneGraph {
 						local517.z = local316;
 						local417 = local517.x >> 7;
 						local255 = local517.z >> 7;
-						if (local417 >= 0 && local255 >= 0 && local417 < 104 && local255 < 104) {
+						if (local417 >= 0 && local255 >= 0 && local417 < MAP_SIZE && local255 < MAP_SIZE) {
 							local517.aBoolean125 = (tileFlags[1][local417][local255] & 0x2) != 0;
 							local517.y = tileHeights[local517.level][local417][local255] - local517.y;
 							LightingManager.method2389(local517);

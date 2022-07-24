@@ -78,15 +78,15 @@ public class Camera {
 	@OriginalMember(owner = "client!kf", name = "f", descriptor = "I")
 	public static int anInt5230;
 	@OriginalMember(owner = "client!ke", name = "U", descriptor = "I")
-	public static int anInt3291 = 0;
+	public static int horizontalPlayerOffset = 0;
 	@OriginalMember(owner = "client!uc", name = "a", descriptor = "I")
 	public static int anInt4229 = 2;
 	@OriginalMember(owner = "client!ta", name = "B", descriptor = "I")
 	public static int anInt5245 = 0;
 	@OriginalMember(owner = "client!qk", name = "h", descriptor = "I")
-	public static int anInt4774 = 0;
+	public static int verticalPlayerOffset = 0;  // 0 = camera centered on player, positive values = camera north of player, negative values = camera south of player
 	@OriginalMember(owner = "client!sj", name = "H", descriptor = "I")
-	public static int anInt5161 = 0;
+	public static int hiddenCameraYaw = 0;  // when the compass indicates true north, values above 0 will make it so that the camera still has some clockwise yaw
 	@OriginalMember(owner = "client!af", name = "d", descriptor = "I")
 	public static int anInt40;
 	@OriginalMember(owner = "client!lg", name = "d", descriptor = "F")
@@ -360,9 +360,9 @@ public class Camera {
 	}
 
 	@OriginalMember(owner = "client!uf", name = "a", descriptor = "(B)V")
-	public static void method4273() {
-		@Pc(14) int playerX = PlayerList.self.xFine + anInt3291;
-		@Pc(20) int playerZ = PlayerList.self.zFine + anInt4774;
+	public static void moveCamera() {
+		@Pc(14) int playerX = PlayerList.self.xFine + horizontalPlayerOffset;
+		@Pc(20) int playerZ = PlayerList.self.zFine + verticalPlayerOffset;
 		if (cameraX - playerX < -500 || cameraX - playerX > 500 || cameraZ - playerZ < -500 || cameraZ - playerZ > 500) {
 			cameraX = playerX;
 			cameraZ = playerZ;

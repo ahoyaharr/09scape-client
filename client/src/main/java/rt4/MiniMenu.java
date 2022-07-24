@@ -533,8 +533,8 @@ public class MiniMenu {
 					Protocol.outboundBuffer.p1(anInt2878);
 					Protocol.outboundBuffer.p2((int) Camera.yawTarget);
 					Protocol.outboundBuffer.p1(57);
-					Protocol.outboundBuffer.p1(MiniMap.anInt1814);
-					Protocol.outboundBuffer.p1(MiniMap.anInt4130);
+					Protocol.outboundBuffer.p1(MiniMap.hiddenMinimapYaw);
+					Protocol.outboundBuffer.p1(MiniMap.zoom);
 					Protocol.outboundBuffer.p1(89);
 					Protocol.outboundBuffer.p2(PlayerList.self.xFine);
 					Protocol.outboundBuffer.p2(PlayerList.self.zFine);

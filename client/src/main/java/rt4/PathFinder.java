@@ -5,12 +5,14 @@ import org.openrs2.deob.annotation.OriginalMember;
 import org.openrs2.deob.annotation.Pc;
 
 public class PathFinder {
+	final static byte MAP_SIZE = 127;
+
 	@OriginalMember(owner = "client!li", name = "h", descriptor = "[Lclient!mj;")
 	public static final CollisionMap[] collisionMaps = new CollisionMap[4];
 	@OriginalMember(owner = "client!lf", name = "a", descriptor = "[[I")
-	public static final int[][] parents = new int[104][104];
+	public static final int[][] parents = new int[MAP_SIZE][MAP_SIZE];
 	@OriginalMember(owner = "client!nd", name = "q", descriptor = "[[I")
-	public static final int[][] costs = new int[104][104];
+	public static final int[][] costs = new int[MAP_SIZE][MAP_SIZE];
 	@OriginalMember(owner = "client!vc", name = "eb", descriptor = "[I")
 	public static final int[] queueX = new int[4096];
 	@OriginalMember(owner = "client!gk", name = "c", descriptor = "[I")
@@ -33,8 +35,8 @@ public class PathFinder {
 	public static boolean findPath2(@OriginalArg(0) int arg0, @OriginalArg(1) int arg1, @OriginalArg(2) int arg2, @OriginalArg(3) int arg3, @OriginalArg(4) int arg4, @OriginalArg(5) boolean arg5, @OriginalArg(6) int arg6, @OriginalArg(7) int arg7, @OriginalArg(8) int arg8, @OriginalArg(9) int arg9, @OriginalArg(11) int arg10) {
 		@Pc(3) int x;
 		@Pc(8) int z;
-		for (x = 0; x < 104; x++) {
-			for (z = 0; z < 104; z++) {
+		for (x = 0; x < MAP_SIZE; x++) {
+			for (z = 0; z < MAP_SIZE; z++) {
 				parents[x][z] = 0;
 				costs[x][z] = 99999999;
 			}
@@ -141,7 +143,7 @@ public class PathFinder {
 			local921 = 100;
 			for (@Pc(928) int local928 = arg8 - 10; local928 <= arg8 + 10; local928++) {
 				for (@Pc(942) int local942 = arg4 - 10; local942 <= arg4 + 10; local942++) {
-					if (local928 >= 0 && local942 >= 0 && local928 < 104 && local942 < 104 && costs[local928][local942] < 100) {
+					if (local928 >= 0 && local942 >= 0 && local928 < MAP_SIZE && local942 < MAP_SIZE && costs[local928][local942] < 100) {
 						@Pc(978) int local978 = 0;
 						@Pc(980) int local980 = 0;
 						if (local928 < arg8) {
@@ -205,8 +207,8 @@ public class PathFinder {
 	public static boolean findPathN(@OriginalArg(0) int arg0, @OriginalArg(1) int arg1, @OriginalArg(2) int arg2, @OriginalArg(4) int arg3, @OriginalArg(5) int arg4, @OriginalArg(6) int arg5, @OriginalArg(7) int arg6, @OriginalArg(8) boolean arg7, @OriginalArg(9) int arg8, @OriginalArg(10) int arg9, @OriginalArg(11) int arg10) {
 		@Pc(3) int local3;
 		@Pc(10) int local10;
-		for (local3 = 0; local3 < 104; local3++) {
-			for (local10 = 0; local10 < 104; local10++) {
+		for (local3 = 0; local3 < MAP_SIZE; local3++) {
+			for (local10 = 0; local10 < MAP_SIZE; local10++) {
 				parents[local3][local10] = 0;
 				costs[local3][local10] = 99999999;
 			}
@@ -313,7 +315,7 @@ public class PathFinder {
 			local839 = 100;
 			for (@Pc(846) int local846 = arg0 - 10; local846 <= arg0 + 10; local846++) {
 				for (@Pc(856) int local856 = arg3 - 10; local856 <= arg3 + 10; local856++) {
-					if (local846 >= 0 && local856 >= 0 && local846 < 104 && local856 < 104 && costs[local846][local856] < 100) {
+					if (local846 >= 0 && local856 >= 0 && local846 < MAP_SIZE && local856 < MAP_SIZE && costs[local846][local856] < 100) {
 						@Pc(894) int local894 = 0;
 						if (local856 < arg3) {
 							local894 = arg3 - local856;
@@ -377,8 +379,8 @@ public class PathFinder {
 	public static boolean findPath1(@OriginalArg(0) int arg0, @OriginalArg(2) int arg1, @OriginalArg(3) int arg2, @OriginalArg(4) int arg3, @OriginalArg(5) int arg4, @OriginalArg(6) int arg5, @OriginalArg(7) int arg6, @OriginalArg(8) int arg7, @OriginalArg(9) int arg8, @OriginalArg(10) int arg9, @OriginalArg(11) boolean arg10, @OriginalArg(12) int arg11) {
 		@Pc(3) int local3;
 		@Pc(10) int local10;
-		for (local3 = 0; local3 < 104; local3++) {
-			for (local10 = 0; local10 < 104; local10++) {
+		for (local3 = 0; local3 < MAP_SIZE; local3++) {
+			for (local10 = 0; local10 < MAP_SIZE; local10++) {
 				parents[local3][local10] = 0;
 				costs[local3][local10] = 99999999;
 			}
@@ -561,7 +563,7 @@ public class PathFinder {
 			local242 = 100;
 			for (@Pc(1247) int local1247 = arg5 - 10; local1247 <= arg5 + 10; local1247++) {
 				for (@Pc(1257) int local1257 = arg0 - 10; local1257 <= arg0 + 10; local1257++) {
-					if (local1247 >= 0 && local1257 >= 0 && local1247 < 104 && local1257 < 104 && costs[local1247][local1257] < 100) {
+					if (local1247 >= 0 && local1257 >= 0 && local1247 < MAP_SIZE && local1257 < MAP_SIZE && costs[local1247][local1257] < 100) {
 						@Pc(1295) int local1295 = 0;
 						if (arg5 > local1247) {
 							local1295 = arg5 - local1247;

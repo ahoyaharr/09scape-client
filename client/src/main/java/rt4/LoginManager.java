@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class LoginManager {
+	final static byte MAP_SIZE = 127;
+
 	@OriginalMember(owner = "client!bg", name = "g", descriptor = "Lclient!i;")
 	public static final Packet buffer = new Packet(5000);
 	@OriginalMember(owner = "client!nd", name = "r", descriptor = "Lclient!na;")
@@ -682,8 +684,8 @@ public class LoginManager {
 			NpcList.npcs[i] = null;
 		}
 		for (int level = 0; level < 4; level++) {
-			for (@Pc(115) int x = 0; x < 104; x++) {
-				for (@Pc(122) int z = 0; z < 104; z++) {
+			for (@Pc(115) int x = 0; x < MAP_SIZE; x++) {
+				for (@Pc(122) int z = 0; z < MAP_SIZE; z++) {
 					SceneGraph.objStacks[level][x][z] = null;
 				}
 			}
@@ -767,11 +769,11 @@ public class LoginManager {
 		}
 		Player.level = arg0;
 		PlayerList.self.teleport(arg5, false, arg3);
-		@Pc(322) byte local322 = 104;
+		@Pc(322) int local322 = MAP_SIZE; // This used to be a byte with value 104
 		@Pc(324) byte local324 = 0;
 		@Pc(326) byte local326 = 0;
 		@Pc(328) byte local328 = 1;
-		@Pc(330) byte local330 = 104;
+		@Pc(330) int local330 = MAP_SIZE; // This used to be a byte with value 104
 		@Pc(332) byte local332 = 1;
 		if (local81 < 0) {
 			local328 = -1;
@@ -788,7 +790,7 @@ public class LoginManager {
 				@Pc(378) int local378 = local86 + local358;
 				@Pc(382) int local382 = local367 + local81;
 				for (@Pc(384) int local384 = 0; local384 < 4; local384++) {
-					if (local378 >= 0 && local382 >= 0 && local378 < 104 && local382 < 104) {
+					if (local378 >= 0 && local382 >= 0 && local378 < MAP_SIZE && local382 < MAP_SIZE) {
 						SceneGraph.objStacks[local384][local358][local367] = SceneGraph.objStacks[local384][local378][local382];
 					} else {
 						SceneGraph.objStacks[local384][local358][local367] = null;
@@ -799,7 +801,7 @@ public class LoginManager {
 		for (@Pc(451) ChangeLocRequest local451 = (ChangeLocRequest) ChangeLocRequest.queue.head(); local451 != null; local451 = (ChangeLocRequest) ChangeLocRequest.queue.next()) {
 			local451.z -= local81;
 			local451.x -= local86;
-			if (local451.x < 0 || local451.z < 0 || local451.x >= 104 || local451.z >= 104) {
+			if (local451.x < 0 || local451.z < 0 || local451.x >= MAP_SIZE || local451.z >= MAP_SIZE) {
 				local451.unlink();
 			}
 		}
@@ -818,7 +820,7 @@ public class LoginManager {
 			mapFlagZ -= local81;
 			mapFlagX -= local86;
 		}
-		if (GlRenderer.enabled && arg4 && (Math.abs(local86) > 104 || Math.abs(local81) > 104)) {
+		if (GlRenderer.enabled && arg4 && (Math.abs(local86) > MAP_SIZE || Math.abs(local81) > MAP_SIZE)) {
 			FogManager.setInstantFade();
 		}
 		LightingManager.anInt2875 = -1;
@@ -999,8 +1001,8 @@ public class LoginManager {
 			PathFinder.collisionMaps[i].clear();
 		}
 		for (i = 0; i < 4; i++) {
-			for (chunkX = 0; chunkX < 104; chunkX++) {
-				for (chunkZ = 0; chunkZ < 104; chunkZ++) {
+			for (chunkX = 0; chunkX < MAP_SIZE; chunkX++) {
+				for (chunkZ = 0; chunkZ < MAP_SIZE; chunkZ++) {
 					SceneGraph.tileFlags[i][chunkX][chunkZ] = 0;
 				}
 			}
@@ -1093,8 +1095,8 @@ public class LoginManager {
 				}
 			}
 		}
-		for (chunkX = 0; chunkX < 104; chunkX++) {
-			for (chunkZ = 0; chunkZ < 104; chunkZ++) {
+		for (chunkX = 0; chunkX < MAP_SIZE; chunkX++) {
+			for (chunkZ = 0; chunkZ < MAP_SIZE; chunkZ++) {
 				Protocol.spawnGroundObject(chunkZ, chunkX);
 			}
 		}
@@ -1337,7 +1339,7 @@ public class LoginManager {
 					@Pc(129) int local129 = local103 & 0x3F;
 					@Pc(142) int local142 = local129 + (regionBitPacked[local16] & 0xFF) * 64 - Camera.originZ;
 					@Pc(148) NpcType local148 = NpcTypeList.get(local74.g2());
-					if (NpcList.npcs[local97] == null && (local148.aByte10 & 0x1) > 0 && local107 == centralPlane && local125 >= 0 && local148.size + local125 < 104 && local142 >= 0 && local142 + local148.size < 104) {
+					if (NpcList.npcs[local97] == null && (local148.aByte10 & 0x1) > 0 && local107 == centralPlane && local125 >= 0 && local148.size + local125 < MAP_SIZE && local142 >= 0 && local142 + local148.size < MAP_SIZE) {
 						NpcList.npcs[local97] = new Npc();
 						@Pc(198) Npc local198 = NpcList.npcs[local97];
 						NpcList.ids[NpcList.size++] = local97;

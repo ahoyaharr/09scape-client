@@ -15,6 +15,7 @@ import java.util.Random;
 
 @OriginalClass("client!client")
 public final class client extends GameShell {
+	final static byte MAP_SIZE = 127;
 
 	@OriginalMember(owner = "client!dk", name = "j", descriptor = "[Lclient!en;")
 	public static final BufferedFile[] cacheIndexes = new BufferedFile[28];
@@ -277,7 +278,7 @@ public final class client extends GameShell {
 			instance = c;
 			c.startApplication(modeWhat + 32, "runescape");
 			GameShell.frame.setLocationRelativeTo(null);
-			GameShell.frame.setSize(1024, 768); // set a reasonable size by default
+			GameShell.frame.setSize(781, 542); // set a reasonable size by default
 		} catch (@Pc(167) Exception ex) {
 			TracingException.report(null, ex);
 		}
@@ -552,20 +553,20 @@ public final class client extends GameShell {
 			Chat.messages[local3506] = null;
 		}
 		MiniMenu.anInt5014 = 0;
-		Camera.anInt3291 = (int) (Math.random() * 100.0D) - 50;
+		Camera.horizontalPlayerOffset = 0;  // How off-center on the horizontal axis the player is relative to the camera. 0 means the player is centered.
 		LoginManager.mapFlagZ = 0;
-		Camera.yawTarget = (int) (Math.random() * 20.0D) - 10 & 0x7FF;
+		Camera.yawTarget = 0;  // Start the camera facing true north
 		LightingManager.anInt2875 = -1;
 		PlayerList.size = 0;
 		MiniMap.state = 0;
-		Camera.anInt4774 = (int) (Math.random() * 110.0D) - 55;
+		Camera.verticalPlayerOffset = 0;  // How off-center on the vertical axis the player is relative to the camera. 0 means the player is centered.
 		MiniMenu.aBoolean302 = false;
-		MiniMap.anInt4130 = (int) (Math.random() * 30.0D) - 20;
+		MiniMap.zoom = 128;  // Minimap zoom level; TODO: has some side effects that need fixing.
 		SoundPlayer.size = 0;
 		LoginManager.mapFlagX = 0;
-		MiniMap.anInt1814 = (int) (Math.random() * 120.0D) - 60;
+		MiniMap.hiddenMinimapYaw = 0;  // Non-zero values make it so the map does not face true north when the compass faces true north.
 		Chat.size = 0;
-		Camera.anInt5161 = (int) (Math.random() * 80.0D) - 40;
+		Camera.hiddenCameraYaw = 0;  // Non-zero values make it so the camera does not face true north when the compass faces true north.
 		NpcList.size = 0;
 		for (local3506 = 0; local3506 < 2048; local3506++) {
 			PlayerList.players[local3506] = null;
@@ -579,8 +580,8 @@ public final class client extends GameShell {
 		SceneGraph.spotanims.clear();
 		if (SceneGraph.objStacks != null) {
 			for (local3506 = 0; local3506 < 4; local3506++) {
-				for (@Pc(3663) int local3663 = 0; local3663 < 104; local3663++) {
-					for (@Pc(3670) int local3670 = 0; local3670 < 104; local3670++) {
+				for (@Pc(3663) int local3663 = 0; local3663 < MAP_SIZE; local3663++) {
+					for (@Pc(3670) int local3670 = 0; local3670 < MAP_SIZE; local3670++) {
 						SceneGraph.objStacks[local3506][local3663][local3670] = null;
 					}
 				}
@@ -710,25 +711,25 @@ public final class client extends GameShell {
 		if ((gameState == 30 || gameState == 10) && (GameShell.replaceCanvas || DisplayMode.aLong89 != 0L && DisplayMode.aLong89 < MonotonicClock.currentTimeMillis())) {
 			DisplayMode.setWindowMode(GameShell.replaceCanvas, DisplayMode.getWindowMode(), Preferences.fullScreenWidth, Preferences.fullScreenHeight);
 		}
-		@Pc(80) int local80;
-		@Pc(84) int local84;
+		@Pc(80) int width;
+		@Pc(84) int height;
 		if (GameShell.fullScreenFrame == null) {
-			@Pc(65) Container local65;
+			@Pc(65) Container frame;
 			if (GameShell.fullScreenFrame != null) {
-				local65 = GameShell.fullScreenFrame;
+				frame = GameShell.fullScreenFrame;
 			} else if (GameShell.frame == null) {
-				local65 = GameShell.signLink.applet;
+				frame = GameShell.signLink.applet;
 			} else {
-				local65 = GameShell.frame;
+				frame = GameShell.frame;
 			}
-			local80 = local65.getSize().width;
-			local84 = local65.getSize().height;
-			if (local65 == GameShell.frame) {
-				@Pc(90) Insets local90 = GameShell.frame.getInsets();
-				local80 -= local90.right + local90.left;
-				local84 -= local90.top + local90.bottom;
+			width = frame.getSize().width;
+			height = frame.getSize().height;
+			if (frame == GameShell.frame) {
+				@Pc(90) Insets borders = GameShell.frame.getInsets();
+				width -= borders.right + borders.left;
+				height -= borders.top + borders.bottom;
 			}
-			if (local80 != GameShell.frameWidth || local84 != GameShell.frameHeight) {
+			if (width != GameShell.frameWidth || height != GameShell.frameHeight) {
 				GameShell.method3662();
 				DisplayMode.aLong89 = MonotonicClock.currentTimeMillis() + 500L;
 			}
@@ -745,8 +746,8 @@ public final class client extends GameShell {
 			GameShell.method2704();
 		}
 		if (GlRenderer.enabled) {
-			for (local80 = 0; local80 < 100; local80++) {
-				InterfaceList.aBooleanArray100[local80] = true;
+			for (width = 0; width < 100; width++) {
+				InterfaceList.aBooleanArray100[width] = true;
 			}
 		}
 		if (gameState == 0) {
@@ -760,14 +761,14 @@ public final class client extends GameShell {
 				if (anInt5150 < LoginManager.mapFilesMissingCount) {
 					anInt5150 = LoginManager.mapFilesMissingCount;
 				}
-				local80 = (anInt5150 - LoginManager.mapFilesMissingCount) * 50 / anInt5150;
-				Fonts.drawTextOnScreen(false, JagString.concatenate(new JagString[]{LocalizedText.LOADING, aClass100_974, JagString.parseInt(local80), Cs1ScriptRunner.aClass100_80}));
+				width = (anInt5150 - LoginManager.mapFilesMissingCount) * 50 / anInt5150;
+				Fonts.drawTextOnScreen(false, JagString.concatenate(new JagString[]{LocalizedText.LOADING, aClass100_974, JagString.parseInt(width), Cs1ScriptRunner.aClass100_80}));
 			} else if (LoginManager.loadingScreenState == 2) {
 				if (anInt1196 < LoginManager.anInt5804) {
 					anInt1196 = LoginManager.anInt5804;
 				}
-				local80 = (anInt1196 - LoginManager.anInt5804) * 50 / anInt1196 + 50;
-				Fonts.drawTextOnScreen(false, JagString.concatenate(new JagString[]{LocalizedText.LOADING, aClass100_974, JagString.parseInt(local80), Cs1ScriptRunner.aClass100_80}));
+				width = (anInt1196 - LoginManager.anInt5804) * 50 / anInt1196 + 50;
+				Fonts.drawTextOnScreen(false, JagString.concatenate(new JagString[]{LocalizedText.LOADING, aClass100_974, JagString.parseInt(width), Cs1ScriptRunner.aClass100_80}));
 			} else {
 				Fonts.drawTextOnScreen(false, LocalizedText.LOADING);
 			}
@@ -778,18 +779,18 @@ public final class client extends GameShell {
 		}
 		if (GlRenderer.enabled && gameState != 0) {
 			GlRenderer.swapBuffers();
-			for (local80 = 0; local80 < InterfaceList.rectangles; local80++) {
-				InterfaceList.rectangleRedraw[local80] = false;
+			for (width = 0; width < InterfaceList.rectangles; width++) {
+				InterfaceList.rectangleRedraw[width] = false;
 			}
 		} else {
-			@Pc(388) Graphics local388;
+			@Pc(388) Graphics graphics;
 			if ((gameState == 30 || gameState == 10) && Cheat.rectDebug == 0 && !local158) {
 				try {
-					local388 = GameShell.canvas.getGraphics();
-					for (local84 = 0; local84 < InterfaceList.rectangles; local84++) {
-						if (InterfaceList.rectangleRedraw[local84]) {
-							SoftwareRaster.frameBuffer.drawAt(InterfaceList.rectangleWidth[local84], InterfaceList.rectangleX[local84], InterfaceList.rectangleHeight[local84], local388, InterfaceList.rectangleY[local84]);
-							InterfaceList.rectangleRedraw[local84] = false;
+					graphics = GameShell.canvas.getGraphics();
+					for (height = 0; height < InterfaceList.rectangles; height++) {
+						if (InterfaceList.rectangleRedraw[height]) {
+							SoftwareRaster.frameBuffer.drawAt(InterfaceList.rectangleWidth[height], InterfaceList.rectangleX[height], InterfaceList.rectangleHeight[height], graphics, InterfaceList.rectangleY[height]);
+							InterfaceList.rectangleRedraw[height] = false;
 						}
 					}
 				} catch (@Pc(423) Exception local423) {
@@ -797,10 +798,10 @@ public final class client extends GameShell {
 				}
 			} else if (gameState != 0) {
 				try {
-					local388 = GameShell.canvas.getGraphics();
-					SoftwareRaster.frameBuffer.draw(local388);
-					for (local84 = 0; local84 < InterfaceList.rectangles; local84++) {
-						InterfaceList.rectangleRedraw[local84] = false;
+					graphics = GameShell.canvas.getGraphics();
+					SoftwareRaster.frameBuffer.draw(graphics);
+					for (height = 0; height < InterfaceList.rectangles; height++) {
+						InterfaceList.rectangleRedraw[height] = false;
 					}
 				} catch (@Pc(453) Exception local453) {
 					GameShell.canvas.repaint();
@@ -1061,7 +1062,7 @@ public final class client extends GameShell {
 							local66.movementQueueX[0] = local98 + (local66.xFine >> 7);
 							local66.movementQueueZ[0] = local106 + (local66.zFine >> 7);
 							PathFinder.collisionMaps[Player.level].unflagScenery(local66.xFine >> 7, local66.getSize(), false, 0, local66.getSize(), local66.zFine >> 7);
-							if (local66.movementQueueX[0] >= 0 && local66.movementQueueX[0] <= 104 - local66.getSize() && local66.movementQueueZ[0] >= 0 && local66.movementQueueZ[0] <= 104 - local66.getSize() && PathFinder.collisionMaps[Player.level].method3054(local66.zFine >> 7, local66.movementQueueZ[0], local66.movementQueueX[0], local66.xFine >> 7)) {
+							if (local66.movementQueueX[0] >= 0 && local66.movementQueueX[0] <= MAP_SIZE - local66.getSize() && local66.movementQueueZ[0] >= 0 && local66.movementQueueZ[0] <= MAP_SIZE - local66.getSize() && PathFinder.collisionMaps[Player.level].method3054(local66.zFine >> 7, local66.movementQueueZ[0], local66.movementQueueX[0], local66.xFine >> 7)) {
 								if (local66.getSize() > 1) {
 									for (@Pc(226) int local226 = local66.movementQueueX[0]; local66.movementQueueX[0] + local66.getSize() > local226; local226++) {
 										for (@Pc(246) int local246 = local66.movementQueueZ[0]; local66.movementQueueZ[0] + local66.getSize() > local246; local246++) {
@@ -1292,7 +1293,7 @@ public final class client extends GameShell {
 		if (mainLoadState == 10) {
 			LightingManager.method2392();
 			for (percentage = 0; percentage < 4; percentage++) {
-				PathFinder.collisionMaps[percentage] = new CollisionMap(104, 104);
+				PathFinder.collisionMaps[percentage] = new CollisionMap(MAP_SIZE, MAP_SIZE);
 			}
 			mainLoadPercentage = 10;
 			mainLoadState = 30;
