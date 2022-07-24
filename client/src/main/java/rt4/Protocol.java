@@ -2879,7 +2879,7 @@ public class Protocol {
 												}
 											}
 											if (Camera.cameraType == 1) {
-												Camera.method4273();
+												Camera.moveCamera();
 											} else if (Camera.cameraType == 2) {
 												Camera.updateLockedCamera();
 											} else {
