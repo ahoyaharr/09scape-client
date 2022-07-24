@@ -54,12 +54,12 @@ public class HintArrowManager {
 				local68.bounds.valid = false;
 			}
 		} else {
-			@Pc(142) SoftwareModel local142 = (SoftwareModel) model;
+			@Pc(142) SoftwareModel softwareModel = (SoftwareModel) model;
 			if (arg5 != SceneGraph.getTileHeight(Player.level, minX + arg3, minZ + arg1) || arg5 != SceneGraph.getTileHeight(Player.level, arg3 + maxX, maxZ + arg1)) {
-				for (local94 = 0; local94 < local142.vertexCount; local94++) {
-					local142.vertexY[local94] += SceneGraph.getTileHeight(Player.level, arg3 + local142.vertexX[local94], local142.vertexZ[local94] + arg1) - arg5;
+				for (local94 = 0; local94 < softwareModel.vertexCount; local94++) {
+					softwareModel.vertexY[local94] += SceneGraph.getTileHeight(Player.level, arg3 + softwareModel.vertexX[local94], softwareModel.vertexZ[local94] + arg1) - arg5;
 				}
-				local142.boundsValid = false;
+				softwareModel.boundsValid = false;
 			}
 		}
 		return model;
