@@ -528,10 +528,10 @@ public final class Player extends PathingEntity {
 			}
 		} else {
 			if (local184 != null) {
-				local76 = ((SoftwareModel) local76).method4588(local184);
+				local76 = ((SoftwareModel) local76).getSoftwareModel(local184);
 			}
 			if (local515 != null) {
-				local76 = ((SoftwareModel) local76).method4588(local515);
+				local76 = ((SoftwareModel) local76).getSoftwareModel(local515);
 			}
 			local76.aBoolean303 = true;
 			local76.render(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, this.particleSystem);

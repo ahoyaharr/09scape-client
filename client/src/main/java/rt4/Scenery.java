@@ -44,4 +44,8 @@ public final class Scenery {
 
 	@OriginalMember(owner = "client!ec", name = "A", descriptor = "J")
 	public long key = 0L;
+
+	public int getId() {
+		return (int) (this.key >>> 32) & Integer.MAX_VALUE;
+	}
 }
