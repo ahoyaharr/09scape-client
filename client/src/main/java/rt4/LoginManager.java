@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class LoginManager {
-	final static byte MAP_SIZE = 127;
+	final static byte MAP_SIZE = 104;
 
 	@OriginalMember(owner = "client!bg", name = "g", descriptor = "Lclient!i;")
 	public static final Packet buffer = new Packet(5000);

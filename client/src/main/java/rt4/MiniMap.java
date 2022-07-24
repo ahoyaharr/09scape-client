@@ -44,7 +44,7 @@ public class MiniMap {
 	@OriginalMember(owner = "client!sd", name = "R", descriptor = "I")
 	public static int anInt5062;
 
-	final static byte MAP_SIZE = 127;
+	final static byte MAP_SIZE = 104;
 
 	@OriginalMember(owner = "client!ma", name = "a", descriptor = "([IIIIII)V")
 	public static void renderTile(@OriginalArg(0) int[] pixels, @OriginalArg(1) int index, @OriginalArg(3) int arg2, @OriginalArg(4) int arg3, @OriginalArg(5) int arg4) {

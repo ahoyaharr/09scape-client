@@ -15,7 +15,7 @@ import java.util.Random;
 
 @OriginalClass("client!client")
 public final class client extends GameShell {
-	final static byte MAP_SIZE = 127;
+	final static byte MAP_SIZE = 104;
 
 	@OriginalMember(owner = "client!dk", name = "j", descriptor = "[Lclient!en;")
 	public static final BufferedFile[] cacheIndexes = new BufferedFile[28];

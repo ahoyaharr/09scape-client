@@ -5,7 +5,7 @@ import org.openrs2.deob.annotation.OriginalMember;
 import org.openrs2.deob.annotation.Pc;
 
 public class PathFinder {
-	final static byte MAP_SIZE = 127;
+	final static byte MAP_SIZE = 104;
 
 	@OriginalMember(owner = "client!li", name = "h", descriptor = "[Lclient!mj;")
 	public static final CollisionMap[] collisionMaps = new CollisionMap[4];

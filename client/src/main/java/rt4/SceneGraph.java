@@ -10,7 +10,7 @@ import java.util.List;
 
 public class SceneGraph {
 
-	static final byte MAP_SIZE = 127;
+	static final byte MAP_SIZE = 104;
 	@OriginalMember(owner = "client!bb", name = "g", descriptor = "[[[B")
 	public static final byte[][][] tileFlags = new byte[4][MAP_SIZE][MAP_SIZE];
 	@OriginalMember(owner = "client!mi", name = "Y", descriptor = "[[[Lclient!ih;")
