@@ -5,6 +5,9 @@ import org.openrs2.deob.annotation.OriginalClass;
 import org.openrs2.deob.annotation.OriginalMember;
 import org.openrs2.deob.annotation.Pc;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 @OriginalClass("client!w")
 public final class SoftwareModel extends Model {
 
@@ -542,6 +545,7 @@ public final class SoftwareModel extends Model {
 
 	@OriginalMember(owner = "client!w", name = "e", descriptor = "(I)V")
 	private void drawPolygons(@OriginalArg(0) int arg0) {
+
 		if (aBooleanArray132[arg0]) {
 			this.anAlternateDrawingFunction(arg0);
 			return;
@@ -550,12 +554,12 @@ public final class SoftwareModel extends Model {
 		@Pc(17) int yIndex = this.triangleVertexB[arg0];
 		@Pc(22) int zIndex = this.triangleVertexC[arg0];
 		Rasteriser.testX = aBooleanArray133[arg0];
-		if (this.triangleAlpha == null) {
-			Rasteriser.alpha = 0;
-		} else {
+		Rasteriser.alpha = 0;
+		if (this.triangleAlpha != null && this.highlightColor == -1) { // Highlighting forces maximum opaqueness
 			Rasteriser.alpha = this.triangleAlpha[arg0] & 0xFF;
 		}
-		if (this.textures != null && this.textures[arg0] != -1) {
+		// Draw textures only when not highlighting and a texture exists
+		if (this.textures != null && this.textures[arg0] != -1 && this.highlightColor == -1) {
 			@Pc(141) int local141;
 			@Pc(146) int local146;
 			@Pc(151) int local151;
@@ -577,8 +581,9 @@ public final class SoftwareModel extends Model {
 		} else if (this.polygonShadingColors2[arg0] == -1) {
 			Rasteriser.fillTriangle(anIntArray551[xIndex], anIntArray551[yIndex], anIntArray551[zIndex], anIntArray556[xIndex], anIntArray556[yIndex], anIntArray556[zIndex], Rasteriser.palette[this.polygonColors[arg0] & 0xFFFF]);
 		} else {
-			if (this.highlightColor > -1) {
-				Rasteriser.fillTriangle(anIntArray551[xIndex], anIntArray551[yIndex], anIntArray551[zIndex], anIntArray556[xIndex], anIntArray556[yIndex], anIntArray556[zIndex], Rasteriser.palette[this.highlightColor]);
+			//
+			if (this.highlightColor > -1) {  // Highlighting ignores pseudo-shading
+				Rasteriser.fillTriangle(anIntArray551[xIndex], anIntArray551[yIndex], anIntArray551[zIndex], anIntArray556[xIndex], anIntArray556[yIndex], anIntArray556[zIndex], this.highlightColor);
 			} else {
                 Rasteriser.fillGouraudTriangle(anIntArray551[xIndex], anIntArray551[yIndex], anIntArray551[zIndex], anIntArray556[xIndex], anIntArray556[yIndex], anIntArray556[zIndex], this.polygonColors[arg0] & 0xFFFF, this.polygonShadingColors1[arg0] & 0xFFFF, this.polygonShadingColors2[arg0] & 0xFFFF);
             }

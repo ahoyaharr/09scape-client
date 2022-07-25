@@ -275,78 +275,93 @@ public class MiniMap {
 					}
 				}
 			}
+
+			// Minimap draw area icons (e.g., banks)
 			for (local146 = 0; local146 < locs; local146++) {
 				local181 = locX[local146] * 4 + 2 - PlayerList.self.xFine / 32;
 				local150 = locZ[local146] * 4 + 2 - PlayerList.self.zFine / 32;
-				@Pc(382) LocType local382 = LocTypeList.get(locId[local146]);
-				if (local382.multiLocs != null) {
-					local382 = local382.getMultiLoc();
-					if (local382 == null || local382.mapElement == -1) {
+				@Pc(382) LocType locType = LocTypeList.get(locId[local146]);
+				if (locType.multiLocs != null) {
+					locType = locType.getMultiLoc();
+					if (locType == null || locType.mapElement == -1) {
 						continue;
 					}
 				}
-				drawMinimapIcons(arg3, Sprites.mapfuncs[local382.mapElement], local150, local181, arg1, arg2);
+				drawMinimapIcons(arg3, Sprites.mapfuncs[locType.mapElement], local150, local181, arg1, arg2);
 			}
-			for (int i = 0; i < MAP_SIZE; i++) {
-				for (int j = 0; j < MAP_SIZE; j++) {
-					@Pc(439) LinkedList itemStackOnTile = SceneGraph.objStacks[Player.level][i][j];
-					if (itemStackOnTile != null) {
-						int minimapX = i * 4 + 2 - PlayerList.self.xFine / 32;
-						int minimapY = j * 4 + 2 - PlayerList.self.zFine / 32;
-						drawMinimapIcons(arg3, Sprites.mapdots[0], minimapY, minimapX, arg1, arg2);
+
+			// Minimap draw item dots
+			if (!HighlightConfig.minimapHideItems) {
+				for (int i = 0; i < MAP_SIZE; i++) {
+					for (int j = 0; j < MAP_SIZE; j++) {
+						@Pc(439) LinkedList itemStackOnTile = SceneGraph.objStacks[Player.level][i][j];
+						if (itemStackOnTile != null) {
+							int minimapX = i * 4 + 2 - PlayerList.self.xFine / 32;
+							int minimapY = j * 4 + 2 - PlayerList.self.zFine / 32;
+							drawMinimapIcons(arg3, Sprites.mapdots[0], minimapY, minimapX, arg1, arg2);
+						}
 					}
 				}
 			}
-			for (local146 = 0; local146 < NpcList.size; local146++) {
-				@Pc(498) Npc local498 = NpcList.npcs[NpcList.ids[local146]];
-				if (local498 != null && local498.isVisible()) {
-					@Pc(507) NpcType local507 = local498.type;
-					if (local507 != null && local507.multiNpcs != null) {
-						local507 = local507.getMultiNpc();
+
+			// Minimap draw NPC dots
+			if (!HighlightConfig.minimapHideNPC) {
+				for (int i = 0; i < NpcList.size; i++) {
+					@Pc(498) Npc npc = NpcList.npcs[NpcList.ids[i]];
+					if (npc != null && npc.isVisible()) {
+						@Pc(507) NpcType npcType = npc.type;
+						if (npcType != null && npcType.multiNpcs != null) {
+							npcType = npcType.getMultiNpc();
+						}
+						if (npcType != null && npcType.aBoolean184 && npcType.aBoolean183) {
+							local154 = npc.xFine / 32 - PlayerList.self.xFine / 32;
+							local231 = npc.zFine / 32 - PlayerList.self.zFine / 32;
+							if (npcType.anInt3739 == -1) {
+								drawMinimapIcons(arg3, Sprites.mapdots[1], local231, local154, arg1, arg2);
+							} else {
+								drawMinimapIcons(arg3, Sprites.mapfuncs[npcType.anInt3739], local231, local154, arg1, arg2);
+							}
+						}
 					}
-					if (local507 != null && local507.aBoolean184 && local507.aBoolean183) {
-						local154 = local498.xFine / 32 - PlayerList.self.xFine / 32;
-						local231 = local498.zFine / 32 - PlayerList.self.zFine / 32;
-						if (local507.anInt3739 == -1) {
-							drawMinimapIcons(arg3, Sprites.mapdots[1], local231, local154, arg1, arg2);
+				}
+			}
+
+			// Minimap draw player dots
+			if (!HighlightConfig.minimapHidePlayers) {
+				for (local146 = 0; local146 < PlayerList.size; local146++) {
+					@Pc(591) Player local591 = PlayerList.players[PlayerList.ids[local146]];
+					if (local591 != null && local591.isVisible()) {
+						local154 = local591.zFine / 32 - PlayerList.self.zFine / 32;
+						local150 = local591.xFine / 32 - PlayerList.self.xFine / 32;
+						@Pc(624) long local624 = local591.username.encode37();
+						@Pc(626) boolean local626 = false;
+						for (local239 = 0; local239 < FriendsList.size; local239++) {
+							if (local624 == FriendsList.encodedUsernames[local239] && FriendsList.worlds[local239] != 0) {
+								local626 = true;
+								break;
+							}
+						}
+						@Pc(660) boolean local660 = false;
+						for (local271 = 0; local271 < ClanChat.size; local271++) {
+							if (local624 == ClanChat.members[local271].key) {
+								local660 = true;
+								break;
+							}
+						}
+						@Pc(682) boolean local682 = PlayerList.self.anInt1650 != 0 && local591.anInt1650 != 0 && local591.anInt1650 == PlayerList.self.anInt1650;
+						if (local626) {
+							drawMinimapIcons(arg3, Sprites.mapdots[3], local154, local150, arg1, arg2);
+						} else if (local660) {
+							drawMinimapIcons(arg3, Sprites.mapdots[5], local154, local150, arg1, arg2);
+						} else if (local682) {
+							drawMinimapIcons(arg3, Sprites.mapdots[4], local154, local150, arg1, arg2);
 						} else {
-							drawMinimapIcons(arg3, Sprites.mapfuncs[local507.anInt3739], local231, local154, arg1, arg2);
+							drawMinimapIcons(arg3, Sprites.mapdots[2], local154, local150, arg1, arg2);
 						}
 					}
 				}
 			}
-			for (local146 = 0; local146 < PlayerList.size; local146++) {
-				@Pc(591) Player local591 = PlayerList.players[PlayerList.ids[local146]];
-				if (local591 != null && local591.isVisible()) {
-					local154 = local591.zFine / 32 - PlayerList.self.zFine / 32;
-					local150 = local591.xFine / 32 - PlayerList.self.xFine / 32;
-					@Pc(624) long local624 = local591.username.encode37();
-					@Pc(626) boolean local626 = false;
-					for (local239 = 0; local239 < FriendsList.size; local239++) {
-						if (local624 == FriendsList.encodedUsernames[local239] && FriendsList.worlds[local239] != 0) {
-							local626 = true;
-							break;
-						}
-					}
-					@Pc(660) boolean local660 = false;
-					for (local271 = 0; local271 < ClanChat.size; local271++) {
-						if (local624 == ClanChat.members[local271].key) {
-							local660 = true;
-							break;
-						}
-					}
-					@Pc(682) boolean local682 = PlayerList.self.anInt1650 != 0 && local591.anInt1650 != 0 && local591.anInt1650 == PlayerList.self.anInt1650;
-					if (local626) {
-						drawMinimapIcons(arg3, Sprites.mapdots[3], local154, local150, arg1, arg2);
-					} else if (local660) {
-						drawMinimapIcons(arg3, Sprites.mapdots[5], local154, local150, arg1, arg2);
-					} else if (local682) {
-						drawMinimapIcons(arg3, Sprites.mapdots[4], local154, local150, arg1, arg2);
-					} else {
-						drawMinimapIcons(arg3, Sprites.mapdots[2], local154, local150, arg1, arg2);
-					}
-				}
-			}
+
 			@Pc(756) MapMarker[] local756 = hintMapMarkers;
 			for (local181 = 0; local181 < local756.length; local181++) {
 				@Pc(770) MapMarker local770 = local756[local181];
@@ -415,7 +430,7 @@ public class MiniMap {
 		if (GlRenderer.enabled) {
 			((GlSprite) mapSprite).method1425(component.width / 2 + arg5 + local81 - mapSprite.anInt1860 / 2, component.height / 2 + arg4 - (local92 + mapSprite.anInt1866 / 2), (GlSprite) component.method489(false));
 		} else {
-			((SoftwareSprite) mapSprite).method312(component.width / 2 + arg5 + local81 - mapSprite.anInt1860 / 2, -(mapSprite.anInt1866 / 2) + component.height / 2 + arg4 + -local92, component.anIntArray37, component.anIntArray45);
+			((SoftwareSprite) mapSprite).drawMinimapIcon(component.width / 2 + arg5 + local81 - mapSprite.anInt1860 / 2, -(mapSprite.anInt1866 / 2) + component.height / 2 + arg4 + -local92, component.anIntArray37, component.anIntArray45);
 		}
 	}
 

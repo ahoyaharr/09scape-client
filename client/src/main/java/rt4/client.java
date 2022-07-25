@@ -561,7 +561,7 @@ public final class client extends GameShell {
 		MiniMap.state = 0;
 		Camera.verticalPlayerOffset = 0;  // How off-center on the vertical axis the player is relative to the camera. 0 means the player is centered.
 		MiniMenu.aBoolean302 = false;
-		MiniMap.zoom = 128;  // Minimap zoom level; TODO: has some side effects that need fixing.
+		MiniMap.zoom = HighlightConfig.MINIMAP_ZOOM_LEVEL;  // Minimap zoom level; TODO: has some side effects that need fixing.
 		SoundPlayer.size = 0;
 		LoginManager.mapFlagX = 0;
 		MiniMap.hiddenMinimapYaw = 0;  // Non-zero values make it so the map does not face true north when the compass faces true north.

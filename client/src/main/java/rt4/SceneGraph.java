@@ -2116,9 +2116,9 @@ public class SceneGraph {
 														}
 													}
 
-													boolean highlight = HighlightConfig.objectIDs.contains(scenery.getId()) && PlayerList.self.seqId == -1;
+													boolean highlight = HighlightConfig.objectIDs.containsKey(scenery.getId()) && PlayerList.self.seqId == -1;
 													if (highlight) {
-														((SoftwareModel) scenery.entity).highlightColor = 53000;
+														((SoftwareModel) scenery.entity).highlightColor = HighlightConfig.objectIDs.get(scenery.getId());
 													}
 													scenery.entity.render(scenery.anInt1714, anInt2886, anInt3038, anInt5205, anInt2222, scenery.anInt1699 - anInt3555, scenery.anInt1706 - anInt3947, scenery.anInt1703 - anInt4903, scenery.key, local24, null);
 													if (highlight) {

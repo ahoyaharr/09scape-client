@@ -128,9 +128,9 @@ public final class Npc extends PathingEntity {
             }
 
             // UPDATE HIGHLIGHTING FOR NPCS HERE
-            boolean highlight = PlayerList.self.seqId == -1 & HighlightConfig.npcIDs.contains(this.type.id) && PlayerList.self.movementQueueSize == 0 && PlayerList.self.hitpointsBarVisibleUntil < (client.loop + 100);
+            boolean highlight = PlayerList.self.seqId == -1 & HighlightConfig.npcIDs.containsKey(this.type.id) && PlayerList.self.movementQueueSize == 0 && PlayerList.self.hitpointsBarVisibleUntil < (client.loop + 100);
             if (highlight) {
-                ((SoftwareModel) body).highlightColor = 53000;
+                ((SoftwareModel) body).highlightColor = HighlightConfig.npcIDs.get(this.type.id);
             }
             body.render(orientation, arg1, arg2, arg3, arg4, x, z, y, key, arg9, this.particleSystem);
             if (highlight) {
