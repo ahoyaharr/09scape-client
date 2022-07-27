@@ -1913,19 +1913,19 @@ public class SceneGraph {
 														GlRenderer.method4159(local33);
 													}
 												}
-												@Pc(1064) ObjStackEntity local1064 = local8.objStack;
-												if (local1064 != null && local1064.anInt3063 == 0) {
+												@Pc(1064) ObjStackEntity objStackEntity = local8.objStack;
+												if (objStackEntity != null && objStackEntity.anInt3063 == 0) {
 													if (GlRenderer.enabled) {
 														LightingManager.method2393(anInt3555, anInt3947, anInt4903, local24, local18, local21);
 													}
-													if (local1064.secondary != null) {
-														local1064.secondary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local1064.xFine - anInt3555, local1064.anInt3057 - anInt3947, local1064.zFine - anInt4903, local1064.key, local24, null);
+													if (objStackEntity.secondary != null) {
+														objStackEntity.secondary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, objStackEntity.xFine - anInt3555, objStackEntity.anInt3057 - anInt3947, objStackEntity.zFine - anInt4903, objStackEntity.key, local24, null);
 													}
-													if (local1064.tertiary != null) {
-														local1064.tertiary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local1064.xFine - anInt3555, local1064.anInt3057 - anInt3947, local1064.zFine - anInt4903, local1064.key, local24, null);
+													if (objStackEntity.tertiary != null) {
+														objStackEntity.tertiary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, objStackEntity.xFine - anInt3555, objStackEntity.anInt3057 - anInt3947, objStackEntity.zFine - anInt4903, objStackEntity.key, local24, null);
 													}
-													if (local1064.primary != null) {
-														local1064.primary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local1064.xFine - anInt3555, local1064.anInt3057 - anInt3947, local1064.zFine - anInt4903, local1064.key, local24, null);
+													if (objStackEntity.primary != null) {
+														objStackEntity.primary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, objStackEntity.xFine - anInt3555, objStackEntity.anInt3057 - anInt3947, objStackEntity.zFine - anInt4903, objStackEntity.key, local24, null);
 													}
 												}
 											}
@@ -2116,7 +2116,7 @@ public class SceneGraph {
 														}
 													}
 
-													boolean highlight = HighlightConfig.objectIDs.containsKey(scenery.getId()) && PlayerList.self.seqId == -1;
+													boolean highlight = HighlightConfig.objectIDs.containsKey(scenery.getId()) && PlayerList.self.seqId == -1 && PlayerList.self.movementQueueSize == 0;
 													if (highlight) {
 														((SoftwareModel) scenery.entity).highlightColor = HighlightConfig.objectIDs.get(scenery.getId());
 													}

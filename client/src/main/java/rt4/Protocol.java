@@ -3429,45 +3429,56 @@ public class Protocol {
 
 	@OriginalMember(owner = "client!rm", name = "a", descriptor = "(IBI)V")
 	public static void spawnGroundObject(@OriginalArg(0) int arg0, @OriginalArg(2) int arg1) {
-		@Pc(9) LinkedList local9 = SceneGraph.objStacks[Player.level][arg1][arg0];
-		if (local9 == null) {
+		@Pc(9) LinkedList objStackLL = SceneGraph.objStacks[Player.level][arg1][arg0];
+		if (objStackLL == null) {
 			SceneGraph.removeObjStack(Player.level, arg1, arg0);
 			return;
 		}
-		@Pc(28) int local28 = -99999999;
-		@Pc(30) ObjStackNode local30 = null;
-		@Pc(35) ObjStackNode local35;
-		for (local35 = (ObjStackNode) local9.head(); local35 != null; local35 = (ObjStackNode) local9.next()) {
-			@Pc(44) ObjType local44 = ObjTypeList.get(local35.value.type);
-			@Pc(47) int local47 = local44.cost;
-			if (local44.stackable == 1) {
-				local47 *= local35.value.amount + 1;
+		@Pc(28) int maximumCost = -99999999;
+		@Pc(30) ObjStackNode primary = null;
+		for (ObjStackNode current = (ObjStackNode) objStackLL.head(); current != null; current = (ObjStackNode) objStackLL.next()) {
+			@Pc(44) ObjType objType = ObjTypeList.get(current.value.type);
+
+			// Do not create ground items for ignored items
+			if (HighlightConfig.itemHideIDs.contains(objType.id)) {
+				continue;
 			}
-			if (local28 < local47) {
-				local28 = local47;
-				local30 = local35;
-			}
-		}
-		if (local30 == null) {
-			SceneGraph.removeObjStack(Player.level, arg1, arg0);
-			return;
-		}
-		local9.addHead(local30);
-		@Pc(89) ObjStack local89 = null;
-		@Pc(91) ObjStack local91 = null;
-		for (local35 = (ObjStackNode) local9.head(); local35 != null; local35 = (ObjStackNode) local9.next()) {
-			@Pc(103) ObjStack local103 = local35.value;
-			if (local103.type != local30.value.type) {
-				if (local89 == null) {
-					local89 = local103;
+
+			// Put highlighted items on the top of the pile
+			if (HighlightConfig.itemHighlightIDs.contains(objType.id)) {
+				primary = current;
+			} else {
+				@Pc(47) int cost = objType.cost;
+				if (objType.stackable == 1) {
+					cost *= current.value.amount + 1;
 				}
-				if (local103.type != local89.type && local91 == null) {
-					local91 = local103;
+				if (maximumCost < cost) {
+					maximumCost = cost;
+					primary = current;
+				}
+			}
+
+		}
+		if (primary == null) {
+			SceneGraph.removeObjStack(Player.level, arg1, arg0);
+			return;
+		}
+		objStackLL.addHead(primary);
+		@Pc(89) ObjStack secondary = null;
+		@Pc(91) ObjStack tertiary = null;
+		for (ObjStackNode current = (ObjStackNode) objStackLL.head(); current != null; current = (ObjStackNode) objStackLL.next()) {
+			@Pc(103) ObjStack objStack = current.value;
+			if (objStack.type != primary.value.type) {
+				if (secondary == null) {
+					secondary = objStack;
+				}
+				if (objStack.type != secondary.type && tertiary == null) {
+					tertiary = objStack;
 				}
 			}
 		}
 		@Pc(152) long local152 = (arg0 << 7) + arg1 + 1610612736;
-		SceneGraph.setObjStack(Player.level, arg1, arg0, SceneGraph.getTileHeight(Player.level, arg1 * 128 + 64, arg0 * 128 + 64), local30.value, local152, local89, local91);
+		SceneGraph.setObjStack(Player.level, arg1, arg0, SceneGraph.getTileHeight(Player.level, arg1 * 128 + 64, arg0 * 128 + 64), primary.value, local152, secondary, tertiary);
 	}
 
 	@OriginalMember(owner = "client!dh", name = "a", descriptor = "(IIII)Lclient!wk;")

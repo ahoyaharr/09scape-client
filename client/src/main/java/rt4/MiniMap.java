@@ -296,9 +296,19 @@ public class MiniMap {
 					for (int j = 0; j < MAP_SIZE; j++) {
 						@Pc(439) LinkedList itemStackOnTile = SceneGraph.objStacks[Player.level][i][j];
 						if (itemStackOnTile != null) {
+							Sprite itemDot = Sprites.mapdots[0];
+
+							for (ObjStackNode current = (ObjStackNode) itemStackOnTile.head(); current != null; current = (ObjStackNode) itemStackOnTile.next()) {
+								ObjType objType = ObjTypeList.get(current.value.type);
+								if (HighlightConfig.itemHighlightIDs.contains(objType.id)) {
+									itemDot = Sprites.mapdots[3];
+								}
+							}
+
+
 							int minimapX = i * 4 + 2 - PlayerList.self.xFine / 32;
 							int minimapY = j * 4 + 2 - PlayerList.self.zFine / 32;
-							drawMinimapIcons(arg3, Sprites.mapdots[0], minimapY, minimapX, arg1, arg2);
+							drawMinimapIcons(arg3, itemDot, minimapY, minimapX, arg1, arg2);
 						}
 					}
 				}
