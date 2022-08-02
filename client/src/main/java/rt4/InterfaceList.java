@@ -736,8 +736,8 @@ public class InterfaceList {
 										if (Keyboard.pressedKeys[Keyboard.KEY_CTRL] && LoginManager.staffModLevel > 0) {
 											i = (int) ((double) (Mouse.clickX - local50 - component.width / 2) * 2.0D / (double) WorldMap.zoom);
 											skill = (int) ((double) (Mouse.clickY - local55 - component.height / 2) * 2.0D / (double) WorldMap.zoom);
-											k = WorldMap.anInt435 + i;
-											@Pc(516) int local516 = WorldMap.anInt919 + skill;
+											k = WorldMap.mapCenterX + i;
+											@Pc(516) int local516 = WorldMap.mapCenterY + skill;
 											@Pc(520) int local520 = k + WorldMap.originX;
 											@Pc(528) int local528 = WorldMap.length + WorldMap.originZ - local516 - 1;
 											Cheat.teleport(local520, local528, 0);
@@ -751,8 +751,8 @@ public class InterfaceList {
 									}
 									if (local212 && anInt3337 > 0) {
 										if (anInt3337 == 1 && (Cs1ScriptRunner.anInt5388 != Mouse.lastMouseX || Cs1ScriptRunner.anInt4035 != Mouse.lastMouseY)) {
-											anInt4620 = WorldMap.anInt435;
-											anInt1885 = WorldMap.anInt919;
+											anInt4620 = WorldMap.mapCenterX;
+											anInt1885 = WorldMap.mapCenterY;
 											anInt3337 = 2;
 										}
 										if (anInt3337 == 2) {

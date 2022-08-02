@@ -15,10 +15,11 @@ public class WorldMap {
 	public static final JagString OVERLAY2 = JagString.parse("overlay2");
 	@OriginalMember(owner = "client!df", name = "c", descriptor = "Lclient!na;")
 	public static final JagString LOC = JagString.parse("loc");
+	/* anInt5338 and anInt3254 used to have a random value instead of 0.5f Removed while debugging. */
 	@OriginalMember(owner = "client!vk", name = "h", descriptor = "I")
-	public static final int anInt5338 = (int) (Math.random() * 33.0D) - 16;
+	public static final int anInt5338 = (int) (0.5f * 33.0D) - 16;
 	@OriginalMember(owner = "client!kd", name = "rb", descriptor = "I")
-	public static final int anInt3254 = (int) (Math.random() * 17.0D) - 8;
+	public static final int anInt3254 = (int) (0.5f * 17.0D) - 8;
 	@OriginalMember(owner = "client!lf", name = "c", descriptor = "Lclient!ih;")
 	public static final LinkedList mapElements = new LinkedList();
 	@OriginalMember(owner = "client!he", name = "db", descriptor = "Lclient!na;")
@@ -66,13 +67,13 @@ public class WorldMap {
 	@OriginalMember(owner = "client!we", name = "v", descriptor = "Lclient!fd;")
 	public static WorldMapFont font11;
 	@OriginalMember(owner = "client!bc", name = "W", descriptor = "I")
-	public static int anInt435;
+	public static int mapCenterX;
 	@OriginalMember(owner = "client!rj", name = "P", descriptor = "I")
 	public static int anInt4901 = -1;
 	@OriginalMember(owner = "client!lc", name = "l", descriptor = "I")
 	public static int anInt3482 = -1;
 	@OriginalMember(owner = "client!cd", name = "u", descriptor = "I")
-	public static int anInt919;
+	public static int mapCenterY;
 	@OriginalMember(owner = "client!qh", name = "a", descriptor = "Lclient!se;")
 	public static MapElementList labels;
 	@OriginalMember(owner = "client!ck", name = "J", descriptor = "[[[B")
@@ -151,16 +152,20 @@ public class WorldMap {
 				targetZoom = 8.0F;
 			}
 
-			@Pc(144) int local144 = (PlayerList.self.xFine >> 7) + Camera.originX - originX;
-			@Pc(153) int local153 = local144 + (int) (Math.random() * 10.0D) - 5;
-			@Pc(168) int local168 = originZ + length - Camera.originZ - (PlayerList.self.zFine >> 7) - 1;
-			@Pc(177) int local177 = local168 + (int) (Math.random() * 10.0D) - 5;
-			if (local153 >= 0 && width > local153 && local177 >= 0 && local177 < length) {
-				anInt435 = local153;
-				anInt919 = local177;
+
+			/* local153 and local177 used to contain random values which created a slight offset in the location that
+			* the world map world would be centered. These variables have been renamed, and the random offset has been
+			* removed so that the world map will always open centered on the player. I am removing because the
+			* randomness is making debugging harder. */
+			@Pc(153) int proposedX = (PlayerList.self.xFine >> 7) + Camera.originX - originX;
+			@Pc(177) int proposedY = originZ + length - Camera.originZ - (PlayerList.self.zFine >> 7) - 1;
+
+			if (proposedX >= 0 && width > proposedX && proposedY >= 0 && proposedY < length) {
+				mapCenterX = proposedX;
+				mapCenterY = proposedY;
 			} else {
-				anInt919 = originZ + length - currentMap.originZ * 64 - 1;
-				anInt435 = currentMap.originX * 64 - originX;
+				mapCenterY = originZ + length - currentMap.originZ * 64 - 1;
+				mapCenterX = currentMap.originX * 64 - originX;
 			}
 
 			method965();
@@ -254,23 +259,23 @@ public class WorldMap {
 
 	@OriginalMember(owner = "client!cn", name = "e", descriptor = "(B)V")
 	public static void method965() {
-		if (anInt435 < 0) {
+		if (mapCenterX < 0) {
 			anInt4901 = -1;
-			anInt435 = 0;
+			mapCenterX = 0;
 			anInt3482 = -1;
 		}
-		if (anInt435 > width) {
+		if (mapCenterX > width) {
 			anInt4901 = -1;
-			anInt435 = width;
+			mapCenterX = width;
 			anInt3482 = -1;
 		}
-		if (anInt919 < 0) {
+		if (mapCenterY < 0) {
 			anInt3482 = -1;
 			anInt4901 = -1;
-			anInt919 = 0;
+			mapCenterY = 0;
 		}
-		if (length < anInt919) {
-			anInt919 = length;
+		if (length < mapCenterY) {
+			mapCenterY = length;
 			anInt4901 = -1;
 			anInt3482 = -1;
 		}
@@ -901,8 +906,8 @@ public class WorldMap {
 
 	@OriginalMember(owner = "client!je", name = "a", descriptor = "(IIIII)V")
 	public static void method2387(@OriginalArg(1) int arg0, @OriginalArg(2) int arg1, @OriginalArg(3) int arg2, @OriginalArg(4) int arg3) {
-		anInt435 = width * arg2 / arg0;
-		anInt919 = length * arg1 / arg3;
+		mapCenterX = width * arg2 / arg0;
+		mapCenterY = length * arg1 / arg3;
 		anInt3482 = -1;
 		anInt4901 = -1;
 		method965();
@@ -912,7 +917,7 @@ public class WorldMap {
 	public static void method4641(@OriginalArg(1) int arg0) {
 		anInt4901 = -1;
 		anInt4901 = -1;
-		anInt919 = arg0;
+		mapCenterY = arg0;
 		method965();
 	}
 
@@ -920,7 +925,7 @@ public class WorldMap {
 	public static void method1964(@OriginalArg(0) int arg0) {
 		anInt4901 = -1;
 		anInt3482 = -1;
-		anInt435 = arg0;
+		mapCenterX = arg0;
 		method965();
 	}
 
@@ -997,16 +1002,16 @@ public class WorldMap {
 		if (anInt3482 == -1 || anInt4901 == -1) {
 			return;
 		}
-		@Pc(60) int local60 = anInt3482 - anInt435;
+		@Pc(60) int local60 = anInt3482 - mapCenterX;
 		if (local60 < 2 || local60 > 2) {
 			local60 >>= 0x4;
 		}
-		@Pc(78) int local78 = anInt4901 - anInt919;
+		@Pc(78) int local78 = anInt4901 - mapCenterY;
 		if (local78 < 2 || local78 > 2) {
 			local78 >>= 0x4;
 		}
-		anInt919 -= -local78;
-		anInt435 += local60;
+		mapCenterY -= -local78;
+		mapCenterX += local60;
 		if (local60 == 0 && local78 == 0) {
 			anInt3482 = -1;
 			anInt4901 = -1;
@@ -1636,12 +1641,12 @@ public class WorldMap {
 			return;
 		}
 		anInt1176 = (int) ((float) (arg2 * 2) / zoom);
-		Cs1ScriptRunner.anInt2882 = anInt435 - (int) ((float) arg3 / zoom);
-		@Pc(211) int local211 = anInt435 - (int) ((float) arg3 / zoom);
-		local50 = anInt919 - (int) ((float) arg2 / zoom);
-		Cs1ScriptRunner.anInt2884 = anInt919 - (int) ((float) arg2 / zoom);
-		@Pc(236) int local236 = anInt919 + (int) ((float) arg2 / zoom);
-		local61 = (int) ((float) arg3 / zoom) + anInt435;
+		Cs1ScriptRunner.anInt2882 = mapCenterX - (int) ((float) arg3 / zoom);
+		@Pc(211) int local211 = mapCenterX - (int) ((float) arg3 / zoom);
+		local50 = mapCenterY - (int) ((float) arg2 / zoom);
+		Cs1ScriptRunner.anInt2884 = mapCenterY - (int) ((float) arg2 / zoom);
+		@Pc(236) int local236 = mapCenterY + (int) ((float) arg2 / zoom);
+		local61 = (int) ((float) arg3 / zoom) + mapCenterX;
 		anInt2387 = (int) ((float) (arg3 * 2) / zoom);
 		if (GlRenderer.enabled) {
 			if (aClass3_Sub2_Sub1_Sub1_2 == null || aClass3_Sub2_Sub1_Sub1_2.width != arg3 || aClass3_Sub2_Sub1_Sub1_2.height != arg2) {

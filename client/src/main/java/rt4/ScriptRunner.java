@@ -4487,8 +4487,8 @@ public final class ScriptRunner {
 														continue;
 													}
 													if (opcode == 5209) {
-														intStack[isp++] = WorldMap.originX + WorldMap.anInt435;
-														intStack[isp++] = WorldMap.originZ + WorldMap.length - WorldMap.anInt919 - 1;
+														intStack[isp++] = WorldMap.originX + WorldMap.mapCenterX;
+														intStack[isp++] = WorldMap.originZ + WorldMap.length - WorldMap.mapCenterY - 1;
 														continue;
 													}
 													if (opcode == Cs2Opcodes.getDungeonmapCenter) {
