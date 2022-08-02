@@ -38,15 +38,13 @@ public class MsiTypeList {
 	@OriginalMember(owner = "client!og", name = "a", descriptor = "(Lclient!ve;Lclient!ve;B)V")
 	public static void init(@OriginalArg(0) Js5 arg0, @OriginalArg(1) Js5 arg1) {
 		spritesArchive = arg1;
-		@Pc(12) int local12 = (int) (Math.random() * 21.0D) - 10;
 		archive = arg0;
-		@Pc(21) int local21 = (int) (Math.random() * 21.0D) - 10;
 		archive.getGroupCapacity(34);
-		@Pc(33) int local33 = (int) (Math.random() * 21.0D) - 10;
-		@Pc(40) int local40 = (int) (Math.random() * 41.0D) - 20;
-		blueDelta = local40 + local21;
-		greenDelta = local12 + local40;
-		redDelta = local40 + local33;
+		/* This function used to generate random offsets which were applied at random to all
+		*  of the sprites, but that sometimes produced ugly colors so they are now removed.*/
+		blueDelta = 0;
+		greenDelta = 0;
+		redDelta = 0;
 	}
 
 	@OriginalMember(owner = "client!qg", name = "h", descriptor = "(I)V")

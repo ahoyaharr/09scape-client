@@ -48,11 +48,11 @@ public class MiniMap {
 
 	@OriginalMember(owner = "client!ma", name = "a", descriptor = "([IIIIII)V")
 	public static void renderTile(@OriginalArg(0) int[] pixels, @OriginalArg(1) int index, @OriginalArg(3) int arg2, @OriginalArg(4) int arg3, @OriginalArg(5) int arg4) {
-		@Pc(7) Tile local7 = SceneGraph.tiles[arg2][arg3][arg4];
-		if (local7 == null) {
+		@Pc(7) Tile tile = SceneGraph.tiles[arg2][arg3][arg4];
+		if (tile == null) {
 			return;
 		}
-		@Pc(13) PlainTile local13 = local7.plainTile;
+		@Pc(13) PlainTile local13 = tile.plainTile;
 		@Pc(23) int local23;
 		if (local13 != null) {
 			@Pc(18) int local18 = local13.anInt4871;
@@ -67,40 +67,45 @@ public class MiniMap {
 			}
 			return;
 		}
-		@Pc(58) ShapedTile local58 = local7.shapedTile;
-		if (local58 == null) {
+		@Pc(58) ShapedTile shapedTile = tile.shapedTile;
+		if (shapedTile == null) {
 			return;
 		}
-		local23 = local58.anInt1966;
-		@Pc(67) int local67 = local58.anInt1967;
-		@Pc(70) int local70 = local58.anInt1969;
-		@Pc(73) int local73 = local58.anInt1968;
+		local23 = shapedTile.anInt1966;
+		@Pc(67) int local67 = shapedTile.anInt1967;
+		@Pc(70) int underlayColor = shapedTile.baseColor;
+		@Pc(73) int overlayColor = shapedTile.topColor;
 		@Pc(77) int[] local77 = anIntArrayArray24[local23];
 		@Pc(81) int[] local81 = anIntArrayArray46[local67];
 		@Pc(83) int local83 = 0;
 		@Pc(87) int local87;
-		if (local70 != 0) {
+		if (underlayColor != 0) {
+			/* Tiles can have two colors; an underlay color, which is typically the ground color
+			* (e.g., brown for dirt or green for grass) and an overlay color which is typically
+			* the color of something on top of the ground (e.g., grey for a paved path). When an overlay
+			* color is present, draw the overlay color. Since these colors are coming from a shapedTile,
+			* the overlay color may not extend across the entire tile, hence the need for two colors.*/
 			for (local87 = 0; local87 < 4; local87++) {
-				pixels[index] = local77[local81[local83++]] == 0 ? local70 : local73;
-				pixels[index + 1] = local77[local81[local83++]] == 0 ? local70 : local73;
-				pixels[index + 2] = local77[local81[local83++]] == 0 ? local70 : local73;
-				pixels[index + 3] = local77[local81[local83++]] == 0 ? local70 : local73;
+				pixels[index] = local77[local81[local83++]] == 0 ? underlayColor : overlayColor;
+				pixels[index + 1] = local77[local81[local83++]] == 0 ? underlayColor : overlayColor;
+				pixels[index + 2] = local77[local81[local83++]] == 0 ? underlayColor : overlayColor;
+				pixels[index + 3] = local77[local81[local83++]] == 0 ? underlayColor : overlayColor;
 				index += 512;
 			}
 			return;
 		}
 		for (local87 = 0; local87 < 4; local87++) {
 			if (local77[local81[local83++]] != 0) {
-				pixels[index] = local73;
+				pixels[index] = overlayColor;
 			}
 			if (local77[local81[local83++]] != 0) {
-				pixels[index + 1] = local73;
+				pixels[index + 1] = overlayColor;
 			}
 			if (local77[local81[local83++]] != 0) {
-				pixels[index + 2] = local73;
+				pixels[index + 2] = overlayColor;
 			}
 			if (local77[local81[local83++]] != 0) {
-				pixels[index + 3] = local73;
+				pixels[index + 3] = overlayColor;
 			}
 			index += 512;
 		}
