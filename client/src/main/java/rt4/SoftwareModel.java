@@ -5,9 +5,6 @@ import org.openrs2.deob.annotation.OriginalClass;
 import org.openrs2.deob.annotation.OriginalMember;
 import org.openrs2.deob.annotation.Pc;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 @OriginalClass("client!w")
 public final class SoftwareModel extends Model {
 

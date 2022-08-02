@@ -2,7 +2,6 @@ package rt4;
 
 import org.openrs2.deob.annotation.OriginalClass;
 import org.openrs2.deob.annotation.OriginalMember;
-import org.openrs2.deob.annotation.Pc;
 
 @OriginalClass("client!qj")
 public final class TriangleNormal {
