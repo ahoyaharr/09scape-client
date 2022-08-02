@@ -23,6 +23,17 @@ public class PlayerList {
 	@OriginalMember(owner = "client!vg", name = "a", descriptor = "[Lclient!na;")
 	public static JagString[] playerNames2;
 
+	public static int getPlayerX() {
+		// Returns the global X coordinate of the player
+		return (PlayerList.self.xFine >> 7) + Camera.originX;
+	}
+
+	public static int getPlayerY() {
+		// Returns the global Y coordinate of the player
+		return (PlayerList.self.zFine >> 7) + Camera.originZ;
+	}
+
+
 	@OriginalMember(owner = "client!fk", name = "b", descriptor = "(I)V")
 	public static void method1444() {
 		for (@Pc(7) int local7 = -1; local7 < size; local7++) {
