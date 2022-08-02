@@ -1618,7 +1618,7 @@ public final class SoftwareModel extends Model {
 					}
 				} else {
 					if (someBool2 && this.method4589(GlModel.anInt3582 + Rasteriser.centerX, RawModel.anInt1053 + Rasteriser.centerY, anIntArray551[local51], anIntArray551[local56], anIntArray551[local61], local65, local69, local73)) {
-						Model.aLongArray11[MiniMenu.anInt7++] = someLong;
+						Model.keys[MiniMenu.anInt7++] = key;
 						someBool2 = false;
 					}
 					if ((local65 - local69) * (anIntArray551[local61] - anIntArray551[local56]) - (anIntArray551[local51] - anIntArray551[local56]) * (local73 - local69) > 0) {

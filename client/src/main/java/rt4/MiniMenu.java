@@ -4,6 +4,9 @@ import org.openrs2.deob.annotation.OriginalArg;
 import org.openrs2.deob.annotation.OriginalMember;
 import org.openrs2.deob.annotation.Pc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MiniMenu {
 	@OriginalMember(owner = "client!df", name = "l", descriptor = "Lclient!na;")
 	public static final JagString COLOR_GREEN = JagString.parse("<col=00ff00>");
@@ -136,7 +139,7 @@ public class MiniMenu {
 	@OriginalMember(owner = "client!em", name = "D", descriptor = "I")
 	public static int gregorianDateSeed;
 	@OriginalMember(owner = "client!ml", name = "Q", descriptor = "I")
-	public static int anInt3953 = 0;
+	public static int anInt3953 = 0;  // This has something to do with whether or not the mouse is clicked; sometimes we can repeat actions by keeping this forced to 2 or 1
 
 	@OriginalMember(owner = "client!va", name = "a", descriptor = "(IZILclient!be;)V")
 	public static void addComponentEntries(@OriginalArg(0) int arg0, @OriginalArg(2) int arg1, @OriginalArg(3) Component component) {
@@ -292,18 +295,19 @@ public class MiniMenu {
 	}
 
 	@OriginalMember(owner = "client!hj", name = "a", descriptor = "(IJBLclient!na;ISLclient!na;I)V")
-	public static void add(@OriginalArg(0) int cursor, @OriginalArg(1) long arg1, @OriginalArg(3) JagString arg2, @OriginalArg(4) int arg3, @OriginalArg(5) short arg4, @OriginalArg(6) JagString arg5, @OriginalArg(7) int arg6) {
+	public static void add(@OriginalArg(0) int cursor, @OriginalArg(1) long key, @OriginalArg(3) JagString optionBase, @OriginalArg(4) int arg3, @OriginalArg(5) short action, @OriginalArg(6) JagString option, @OriginalArg(7) int arg6) {
 		if (Cs1ScriptRunner.aBoolean108 || size >= 500) {
 			return;
 		}
-		ops[size] = arg5;
-		opBases[size] = arg2;
+		ops[size] = option;
+		opBases[size] = optionBase;
 		cursors[size] = cursor == -1 ? anInt1092 : cursor;
-		actions[size] = arg4;
-		keys[size] = arg1;
+		actions[size] = action;
+		keys[size] = key;
 		intArgs1[size] = arg3;
 		intArgs2[size] = arg6;
 		size++;
+
 	}
 
 	@OriginalMember(owner = "client!wl", name = "b", descriptor = "(I)V")
@@ -361,18 +365,18 @@ public class MiniMenu {
 	}
 
 	@OriginalMember(owner = "client!i", name = "p", descriptor = "(II)V")
-	public static void doAction(@OriginalArg(1) int arg0) {
-		if (arg0 < 0) {
+	public static void doAction(@OriginalArg(1) int actionIndex) {
+		if (actionIndex < 0) {
 			return;
 		}
-		@Pc(15) int local15 = intArgs1[arg0];
-		@Pc(19) int local19 = intArgs2[arg0];
-		@Pc(23) int local23 = actions[arg0];
+		@Pc(15) int local15 = intArgs1[actionIndex];
+		@Pc(19) int local19 = intArgs2[actionIndex];
+		@Pc(23) int local23 = actions[actionIndex];
 		if (local23 >= 2000) {
 			local23 -= 2000;
 		}
-		@Pc(31) long local31 = keys[arg0];
-		@Pc(36) int local36 = (int) keys[arg0];
+		@Pc(31) long local31 = keys[actionIndex];
+		@Pc(36) int local36 = (int) keys[actionIndex];
 		@Pc(43) Player local43;
 		if (local23 == 31) {
 			local43 = PlayerList.players[local36];
@@ -635,7 +639,7 @@ public class MiniMenu {
 			}
 		}
 		if (local23 == 9 || local23 == 1003) {
-			ClientProt.method4512(opBases[arg0], local15, local36, local19);
+			ClientProt.method4512(opBases[actionIndex], local15, local36, local19);
 		}
 		if (local23 == 5) {
 			Protocol.outboundBuffer.p1isaac(55);
@@ -1115,31 +1119,31 @@ public class MiniMenu {
 		}
 		@Pc(112) long local112 = -1L;
 		for (local15 = 0; local15 < anInt7; local15++) {
-			@Pc(121) long local121 = Model.aLongArray11[local15];
-			x = (int) local121 & 0x7F;
-			@Pc(133) int local133 = (int) local121 >> 29 & 0x3;
-			@Pc(140) int local140 = (int) (local121 >>> 32) & Integer.MAX_VALUE;
-			@Pc(147) int z = (int) local121 >> 7 & 0x7F;
-			if (local121 != local112) {
-				local112 = local121;
+			@Pc(121) long key = Model.keys[local15];
+			x = (int) key & 0x7F;
+			@Pc(133) int local133 = (int) key >> 29 & 0x3;
+			@Pc(140) int id = (int) (key >>> 32) & Integer.MAX_VALUE;  // Convert key to ID
+			@Pc(147) int z = (int) key >> 7 & 0x7F;
+			if (key != local112) {
+				local112 = key;
 				@Pc(240) int local240;
-				if (local133 == 2 && SceneGraph.isLocValid(Player.level, x, z, local121)) {
-					@Pc(172) LocType local172 = LocTypeList.get(local140);
-					if (local172.multiLocs != null) {
-						local172 = local172.getMultiLoc();
+				if (local133 == 2 && SceneGraph.isLocValid(Player.level, x, z, key)) {
+					@Pc(172) LocType locType = LocTypeList.get(id);
+					if (locType.multiLocs != null) {
+						locType = locType.getMultiLoc();
 					}
-					if (local172 == null) {
+					if (locType == null) {
 						continue;
 					}
 					if (anInt5014 == 1) {
-						add(MiniMap.anInt4075, local121, JagString.concatenate(new JagString[]{aClass100_203, aClass100_164, local172.name}), x, (short) 14, LocalizedText.USE, z);
+						add(MiniMap.anInt4075, key, JagString.concatenate(new JagString[]{aClass100_203, aClass100_164, locType.name}), x, (short) 14, LocalizedText.USE, z);
 					} else if (aBoolean302) {
 						@Pc(363) ParamType local363 = anInt3039 == -1 ? null : ParamTypeList.get(anInt3039);
-						if ((anInt4999 & 0x4) != 0 && (local363 == null || local172.getParam(local363.defaultInt, anInt3039) != local363.defaultInt)) {
-							add(anInt5393, local121, JagString.concatenate(new JagString[]{aClass100_466, aClass100_164, local172.name}), x, (short) 38, aClass100_545, z);
+						if ((anInt4999 & 0x4) != 0 && (local363 == null || locType.getParam(local363.defaultInt, anInt3039) != local363.defaultInt)) {
+							add(anInt5393, key, JagString.concatenate(new JagString[]{aClass100_466, aClass100_164, locType.name}), x, (short) 38, aClass100_545, z);
 						}
 					} else {
-						@Pc(228) JagString[] local228 = local172.ops;
+						@Pc(228) JagString[] local228 = locType.ops;
 						if (aBoolean237) {
 							local228 = annotateOps(local228);
 						}
@@ -1157,23 +1161,23 @@ public class MiniMenu {
 									if (local240 == 2) {
 										local254 = 49;
 									}
-									if (local172.cursor1Op == local240) {
-										local268 = local172.cursor1;
+									if (locType.cursor1Op == local240) {
+										local268 = locType.cursor1;
 									}
 									if (local240 == 3) {
 										local254 = 46;
 									}
-									if (local240 == local172.cursor2Op) {
-										local268 = local172.cursor2;
+									if (local240 == locType.cursor2Op) {
+										local268 = locType.cursor2;
 									}
 									if (local240 == 4) {
 										local254 = 1001;
 									}
-									add(local268, local121, JagString.concatenate(new JagString[]{aClass100_1008, local172.name}), x, local254, local228[local240], z);
+									add(local268, key, JagString.concatenate(new JagString[]{aClass100_1008, locType.name}), x, local254, local228[local240], z);
 								}
 							}
 						}
-						add(MiniMap.anInt5073, local172.id, JagString.concatenate(new JagString[]{aClass100_1008, local172.name}), x, (short) 1004, LocalizedText.EXAMINE, z);
+						add(MiniMap.anInt5073, locType.id, JagString.concatenate(new JagString[]{aClass100_1008, locType.name}), x, (short) 1004, LocalizedText.EXAMINE, z);
 					}
 				}
 				@Pc(514) int local514;
@@ -1183,7 +1187,7 @@ public class MiniMenu {
 				@Pc(502) Npc local502;
 				@Pc(597) Player local597;
 				if (local133 == 1) {
-					@Pc(421) Npc local421 = NpcList.npcs[local140];
+					@Pc(421) Npc local421 = NpcList.npcs[id];
 					if ((local421.type.size & 0x1) == 0 && (local421.xFine & 0x7F) == 0 && (local421.zFine & 0x7F) == 0 || (local421.type.size & 0x1) == 1 && (local421.xFine & 0x7F) == 64 && (local421.zFine & 0x7F) == 64) {
 						local479 = local421.xFine + 64 - local421.type.size * 64;
 						local240 = local421.zFine - (local421.type.size - 1) * 64;
@@ -1204,10 +1208,10 @@ public class MiniMenu {
 							}
 						}
 					}
-					addNpcEntries(local421.type, x, local140, z);
+					addNpcEntries(local421.type, x, id, z);
 				}
 				if (local133 == 0) {
-					@Pc(688) Player player = PlayerList.players[local140];
+					@Pc(688) Player player = PlayerList.players[id];
 					if ((player.xFine & 0x7F) == 64 && (player.zFine & 0x7F) == 64) {
 						local479 = player.xFine - (player.getSize() - 1) * 64;
 						local240 = player.zFine + 64 - player.getSize() * 64;
@@ -1228,55 +1232,66 @@ public class MiniMenu {
 							}
 						}
 					}
-					addPlayerEntries(local140, z, player, x);
+					addPlayerEntries(id, z, player, x);
 				}
 				if (local133 == 3) {
 					@Pc(931) LinkedList objStacks = SceneGraph.objStacks[Player.level][x][z];
 					if (objStacks != null) {
+						List<ObjStackNode> objectStackNodes = new ArrayList<>();
 						for (@Pc(940) ObjStackNode node = (ObjStackNode) objStacks.tail(); node != null; node = (ObjStackNode) objStacks.prev()) {
-							local240 = node.value.type;
-							@Pc(951) ObjType local951 = ObjTypeList.get(local240);
+							objectStackNodes.add(node);
+						}
+
+						objectStackNodes.sort((o1, o2) -> {
+							int o1Score = HighlightConfig.itemHighlightIDs.containsKey(o1.value.type) ? 1 : -1;
+							int o2Score = HighlightConfig.itemHighlightIDs.containsKey(o2.value.type) ? 1 : -1;
+							return o1Score * o1.value.type - o2Score * o2.value.type;
+						});
+
+						for (ObjStackNode node : objectStackNodes) {
+							int itemID = node.value.type;
+							@Pc(951) ObjType objectType = ObjTypeList.get(itemID);
 							if (anInt5014 == 1) {
-								add(MiniMap.anInt4075, local240, JagString.concatenate(new JagString[]{aClass100_203, aClass100_947, local951.name}), x, (short) 33, LocalizedText.USE, z);
+								add(MiniMap.anInt4075, itemID, JagString.concatenate(new JagString[]{aClass100_203, aClass100_947, objectType.name}), x, (short) 33, LocalizedText.USE, z);
 							} else if (aBoolean302) {
 								@Pc(1142) ParamType local1142 = anInt3039 == -1 ? null : ParamTypeList.get(anInt3039);
-								if ((anInt4999 & 0x1) != 0 && (local1142 == null || local951.getParam(local1142.defaultInt, anInt3039) != local1142.defaultInt)) {
-									add(anInt5393, local240, JagString.concatenate(new JagString[]{aClass100_466, aClass100_947, local951.name}), x, (short) 39, aClass100_545, z);
+								if ((anInt4999 & 0x1) != 0 && (local1142 == null || objectType.getParam(local1142.defaultInt, anInt3039) != local1142.defaultInt)) {
+									add(anInt5393, itemID, JagString.concatenate(new JagString[]{aClass100_466, aClass100_947, objectType.name}), x, (short) 39, aClass100_545, z);
 								}
 							} else {
-								@Pc(997) JagString[] local997 = local951.ops;
+								@Pc(997) JagString[] options = objectType.ops;
 								if (aBoolean237) {
-									local997 = annotateOps(local997);
+									options = annotateOps(options);
 								}
-								for (local514 = 4; local514 >= 0; local514--) {
-									if (local997 != null && local997[local514] != null) {
+								for (int i = 4; i >= 0; i--) {
+									if (options != null && options[i] != null) {
 										@Pc(1025) byte local1025 = 0;
-										if (local514 == 0) {
+										if (i == 0) {
 											local1025 = 21;
 										}
-										if (local514 == 1) {
+										if (i == 1) {
 											local1025 = 34;
 										}
 										@Pc(1041) int local1041 = -1;
-										if (local514 == local951.cursor1Op) {
-											local1041 = local951.cursor1;
+										if (i == objectType.cursor1Op) {
+											local1041 = objectType.cursor1;
 										}
-										if (local514 == 2) {
+										if (i == 2) {
 											local1025 = 18;
 										}
-										if (local951.cursor2Op == local514) {
-											local1041 = local951.cursor2;
+										if (objectType.cursor2Op == i) {
+											local1041 = objectType.cursor2;
 										}
-										if (local514 == 3) {
+										if (i == 3) {
 											local1025 = 20;
 										}
-										if (local514 == 4) {
+										if (i == 4) {
 											local1025 = 24;
 										}
-										add(local1041, local240, JagString.concatenate(new JagString[]{aClass100_32, local951.name}), x, local1025, local997[local514], z);
+										add(local1041, itemID, JagString.concatenate(new JagString[]{aClass100_32, objectType.name}), x, local1025, options[i], z);
 									}
 								}
-								add(MiniMap.anInt5073, local240, JagString.concatenate(new JagString[]{aClass100_32, local951.name}), x, (short) 1002, LocalizedText.EXAMINE, z);
+								add(MiniMap.anInt5073, itemID, JagString.concatenate(new JagString[]{aClass100_32, objectType.name}), x, (short) 1002, LocalizedText.EXAMINE, z);
 							}
 						}
 					}
@@ -1286,21 +1301,21 @@ public class MiniMenu {
 	}
 
 	@OriginalMember(owner = "client!bc", name = "f", descriptor = "(B)Lclient!na;")
-	public static JagString method471() {
-		@Pc(32) JagString local32;
+	public static JagString getOptionString() {
+		@Pc(32) JagString optionString;
 		if (anInt5014 == 1 && size < 2) {
-			local32 = JagString.concatenate(new JagString[]{LocalizedText.USE, LocalizedText.MINISEPARATOR, aClass100_203, aClass100_961});
+			optionString = JagString.concatenate(new JagString[]{LocalizedText.USE, LocalizedText.MINISEPARATOR, aClass100_203, aClass100_961});
 		} else if (aBoolean302 && size < 2) {
-			local32 = JagString.concatenate(new JagString[]{aClass100_545, LocalizedText.MINISEPARATOR, aClass100_466, aClass100_961});
+			optionString = JagString.concatenate(new JagString[]{aClass100_545, LocalizedText.MINISEPARATOR, aClass100_466, aClass100_961});
 		} else if (Cheat.shiftClick && Keyboard.pressedKeys[Keyboard.KEY_SHIFT] && size > 2) {
-			local32 = getOp(size - 2);
+			optionString = getOp(size - 2);
 		} else {
-			local32 = getOp(size - 1);
+			optionString = getOp(size - 1);
 		}
 		if (size > 2) {
-			local32 = JagString.concatenate(new JagString[]{local32, aClass100_2, JagString.parseInt(size - 2), LocalizedText.MOREOPTIONS});
+			optionString = JagString.concatenate(new JagString[]{optionString, aClass100_2, JagString.parseInt(size - 2), LocalizedText.MOREOPTIONS});
 		}
-		return local32;
+		return optionString;
 	}
 
 	@OriginalMember(owner = "client!wk", name = "a", descriptor = "(I[Lclient!na;)[Lclient!na;")
@@ -1558,9 +1573,10 @@ public class MiniMenu {
 		if (size < 2 && anInt5014 == 0 && !aBoolean302) {
 			return;
 		}
-		@Pc(24) JagString local24 = method471();
+		@Pc(24) JagString local24 = getOptionString();
 		if (arg0 == null) {
-			@Pc(40) int local40 = Fonts.b12Full.method2859(local24, arg2 + 4, arg1 - -15, client.aRandom1, gregorianDateSeed);
+		    // arg4 sets the seed of client.aRandom1, formerly gregorianDateSeed, now seeding with a const 0
+			@Pc(40) int local40 = Fonts.b12Full.method2859(local24, arg2 + 4, arg1 - -15, client.aRandom1, 0);
 			InterfaceList.redrawScreen(arg2 + 4, Fonts.b12Full.getStringWidth(local24) + local40, arg1, 15);
 			return;
 		}
@@ -1568,12 +1584,13 @@ public class MiniMenu {
 		if (local59 == null) {
 			local59 = Fonts.b12Full;
 		}
-		local59.method2878(local24, arg2, arg1, arg0.width, arg0.height, arg0.color, arg0.shadowColor, arg0.halign, arg0.valign, client.aRandom1, gregorianDateSeed, anIntArray132);
+        // arg10 sets the seed of client.aRandom1, formerly gregorianDateSeed, now seeding with a const 0
+		local59.method2878(local24, arg2, arg1, arg0.width, arg0.height, arg0.color, arg0.shadowColor, arg0.halign, arg0.valign, client.aRandom1, 0, anIntArray132);
 		InterfaceList.redrawScreen(anIntArray132[0], anIntArray132[2], anIntArray132[1], anIntArray132[3]);
 	}
 
 	@OriginalMember(owner = "client!ej", name = "h", descriptor = "(I)V")
-	public static void method1372() {
+	public static void leftClickAction() {
 		if (anInt3953 == 2) {
 			if (ScriptRunner.anInt3751 == Mouse.anInt5850 && ScriptRunner.anInt1892 == Mouse.anInt5895) {
 				anInt3953 = 0;

@@ -2755,7 +2755,7 @@ public class Protocol {
 				} else if ((VarpDomain.anInt2952 == 1 || MiniMenu.method4640(MiniMenu.size - 1)) && MiniMenu.size > 2) {
 					ScriptRunner.method3901();
 				} else if (MiniMenu.size > 0) {
-					MiniMenu.method1372();
+					MiniMenu.leftClickAction();
 				}
 				Mouse.clickButton = 0;
 				MiniMenu.anInt2043 = 10;
@@ -3428,10 +3428,10 @@ public class Protocol {
 	}
 
 	@OriginalMember(owner = "client!rm", name = "a", descriptor = "(IBI)V")
-	public static void spawnGroundObject(@OriginalArg(0) int arg0, @OriginalArg(2) int arg1) {
-		@Pc(9) LinkedList objStackLL = SceneGraph.objStacks[Player.level][arg1][arg0];
+	public static void spawnGroundObject(@OriginalArg(0) int y, @OriginalArg(2) int x) {
+		@Pc(9) LinkedList objStackLL = SceneGraph.objStacks[Player.level][x][y];
 		if (objStackLL == null) {
-			SceneGraph.removeObjStack(Player.level, arg1, arg0);
+			SceneGraph.removeObjStack(Player.level, x, y);
 			return;
 		}
 		@Pc(28) int maximumCost = -99999999;
@@ -3445,7 +3445,7 @@ public class Protocol {
 			}
 
 			// Put highlighted items on the top of the pile
-			if (HighlightConfig.itemHighlightIDs.contains(objType.id)) {
+			if (HighlightConfig.itemHighlightIDs.containsKey(objType.id)) {
 				primary = current;
 			} else {
 				@Pc(47) int cost = objType.cost;
@@ -3460,7 +3460,7 @@ public class Protocol {
 
 		}
 		if (primary == null) {
-			SceneGraph.removeObjStack(Player.level, arg1, arg0);
+			SceneGraph.removeObjStack(Player.level, x, y);
 			return;
 		}
 		objStackLL.addHead(primary);
@@ -3477,8 +3477,8 @@ public class Protocol {
 				}
 			}
 		}
-		@Pc(152) long local152 = (arg0 << 7) + arg1 + 1610612736;
-		SceneGraph.setObjStack(Player.level, arg1, arg0, SceneGraph.getTileHeight(Player.level, arg1 * 128 + 64, arg0 * 128 + 64), primary.value, local152, secondary, tertiary);
+		@Pc(152) long local152 = (y << 7) + x + 1610612736;
+		SceneGraph.setObjStack(Player.level, x, y, SceneGraph.getTileHeight(Player.level, x * 128 + 64, y * 128 + 64), primary.value, local152, secondary, tertiary);
 	}
 
 	@OriginalMember(owner = "client!dh", name = "a", descriptor = "(IIII)Lclient!wk;")
@@ -3533,11 +3533,11 @@ public class Protocol {
 		if (InterfaceList.clickedInventoryComponent != null || Cs1ScriptRunner.aClass13_14 != null) {
 			return;
 		}
-		@Pc(20) int local20 = Mouse.clickButton;
+		@Pc(20) int clickButton = Mouse.clickButton;  // Left = 1, Right = 2(?)
 		@Pc(93) int local93;
 		@Pc(99) int local99;
 		if (!Cs1ScriptRunner.aBoolean108) {
-			if (local20 == 1 && MiniMenu.size > 0) {
+			if (clickButton == 1 && MiniMenu.size > 0) {
 				@Pc(37) short local37 = MiniMenu.actions[MiniMenu.size - 1];
 				if (local37 == 25 || local37 == 23 || local37 == 48 || local37 == 7 || local37 == 13 || local37 == 47 || local37 == 5 || local37 == 43 || local37 == 35 || local37 == 58 || local37 == 22 || local37 == 1006) {
 					local93 = MiniMenu.intArgs1[MiniMenu.size - 1];
@@ -3559,19 +3559,19 @@ public class Protocol {
 					}
 				}
 			}
-			if (local20 == 1 && (VarpDomain.anInt2952 == 1 && MiniMenu.size > 2 || MiniMenu.method4640(MiniMenu.size - 1))) {
-				local20 = 2;
+			if (clickButton == 1 && (VarpDomain.anInt2952 == 1 && MiniMenu.size > 2 || MiniMenu.method4640(MiniMenu.size - 1))) {
+				clickButton = 2;
 			}
-			if (local20 == 2 && MiniMenu.size > 0 || MiniMenu.anInt3953 == 1) {
+			if (clickButton == 2 && MiniMenu.size > 0 || MiniMenu.anInt3953 == 1) {
 				ScriptRunner.method3901();
 			}
-			if (local20 == 1 && MiniMenu.size > 0 || MiniMenu.anInt3953 == 2) {
-				MiniMenu.method1372();
+			if (clickButton == 1 && MiniMenu.size > 0 || MiniMenu.anInt3953 == 2) {
+				MiniMenu.leftClickAction();
 			}
 			return;
 		}
 		@Pc(204) int local204;
-		if (local20 != 1) {
+		if (clickButton != 1) {
 			local93 = Mouse.lastMouseY;
 			local204 = Mouse.lastMouseX;
 			if (local204 < InterfaceList.anInt4271 - 10 || local204 > InterfaceList.anInt761 + InterfaceList.anInt4271 + 10 || InterfaceList.anInt5138 - 10 > local93 || local93 > InterfaceList.anInt436 + InterfaceList.anInt5138 + 10) {
@@ -3579,7 +3579,7 @@ public class Protocol {
 				InterfaceList.redrawScreen(InterfaceList.anInt4271, InterfaceList.anInt761, InterfaceList.anInt5138, InterfaceList.anInt436);
 			}
 		}
-		if (local20 != 1) {
+		if (clickButton != 1) {
 			return;
 		}
 		local204 = InterfaceList.anInt4271;

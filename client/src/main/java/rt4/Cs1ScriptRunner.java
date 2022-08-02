@@ -1399,7 +1399,7 @@ public class Cs1ScriptRunner {
 				} else if ((VarpDomain.anInt2952 == 1 || MiniMenu.method4640(MiniMenu.size - 1)) && MiniMenu.size > 2) {
 					ScriptRunner.method3901();
 				} else if (MiniMenu.size > 0) {
-					MiniMenu.method1372();
+					MiniMenu.leftClickAction();
 				}
 				aClass13_14 = null;
 			}
