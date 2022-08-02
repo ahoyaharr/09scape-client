@@ -747,7 +747,7 @@ public final class SoftwareModel extends Model {
 
 	@OriginalMember(owner = "client!w", name = "a", descriptor = "(IIIIIIIIJILclient!ga;)V")
 	@Override
-	public final void render(@OriginalArg(0) int arg0, @OriginalArg(1) int arg1, @OriginalArg(2) int arg2, @OriginalArg(3) int arg3, @OriginalArg(4) int arg4, @OriginalArg(5) int arg5, @OriginalArg(6) int arg6, @OriginalArg(7) int arg7, @OriginalArg(8) long arg8, @OriginalArg(9) int arg9, @OriginalArg(10) ParticleSystem arg10) {
+	public final void render(@OriginalArg(0) int arg0, @OriginalArg(1) int arg1, @OriginalArg(2) int arg2, @OriginalArg(3) int arg3, @OriginalArg(4) int arg4, @OriginalArg(5) int arg5, @OriginalArg(6) int arg6, @OriginalArg(7) int arg7, @OriginalArg(8) long key, @OriginalArg(9) int arg9, @OriginalArg(10) ParticleSystem arg10) {
 		if (!this.boundsValid) {
 			this.calculateBounds();
 		}
@@ -792,7 +792,7 @@ public final class SoftwareModel extends Model {
 		@Pc(223) int local223;
 		@Pc(208) int local208;
 		@Pc(227) int local227;
-		if (arg8 > 0L && ScriptRunner.aBoolean77 && local53 > 0) {
+		if (key > 0L && ScriptRunner.aBoolean77 && local53 > 0) {
 			if (local71 > 0) {
 				local204 = local91 / local38;
 				local208 = local78 / local53;
@@ -852,7 +852,7 @@ public final class SoftwareModel extends Model {
 				}
 				if (GlModel.anInt3582 >= local204 && GlModel.anInt3582 <= local208 && RawModel.anInt1053 >= local223 && RawModel.anInt1053 <= local227) {
 					if (this.aBoolean303) {
-						Model.aLongArray11[MiniMenu.anInt7++] = arg8;
+						Model.keys[MiniMenu.anInt7++] = key;
 					} else {
 						SomeBooleanPassedToDraw2 = true;
 					}
@@ -892,7 +892,7 @@ public final class SoftwareModel extends Model {
 			}
 		}
 		try {
-			this.draw(someBooleanPassedToDraw1, SomeBooleanPassedToDraw2, arg8, local24 - local53, local38 - local53 + 2, arg10);  // Call to draw function(?)
+			this.draw(someBooleanPassedToDraw1, SomeBooleanPassedToDraw2, key, local24 - local53, local38 - local53 + 2, arg10);  // Call to draw function(?)
 		} catch (@Pc(713) Exception ex) {
 			ex.printStackTrace();
 		}
@@ -1542,7 +1542,7 @@ public final class SoftwareModel extends Model {
 	}
 
 	@OriginalMember(owner = "client!w", name = "a", descriptor = "(ZZJIILclient!ga;)V")
-	private void draw(@OriginalArg(0) boolean someBool1, @OriginalArg(1) boolean someBool2, @OriginalArg(2) long someLong, @OriginalArg(3) int arg3, @OriginalArg(4) int arg4, @OriginalArg(5) ParticleSystem arg5) {
+	private void draw(@OriginalArg(0) boolean someBool1, @OriginalArg(1) boolean someBool2, @OriginalArg(2) long key, @OriginalArg(3) int arg3, @OriginalArg(4) int arg4, @OriginalArg(5) ParticleSystem arg5) {
 		if (arg4 >= 1600) {
 			return;
 		}
