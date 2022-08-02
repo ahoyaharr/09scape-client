@@ -2366,7 +2366,7 @@ public class Protocol {
 			return readPacketInternal();
 		} catch (@Pc(14) IOException ex) {
 			ex.printStackTrace();
-			method3279();
+			logout();
 			return true;
 		} catch (@Pc(19) Exception ex) {
 			ex.printStackTrace();
@@ -2392,7 +2392,7 @@ public class Protocol {
 		}
 		if (LoginManager.aBoolean247) {
 			LoginManager.aBoolean247 = false;
-			method3279();
+			logout();
 			return;
 		}
 		for (@Pc(34) int i = 0; i < 100 && readPacket(); i++) {
@@ -2558,7 +2558,7 @@ public class Protocol {
 		SoundPlayer.loop();
 		LoginManager.anInt1862++;
 		if (LoginManager.anInt1862 > 750) {
-			method3279();
+			logout();
 			return;
 		}
 		PlayerList.method1444();
@@ -2975,7 +2975,7 @@ public class Protocol {
 													outboundBuffer.offset = 0;
 												}
 											} catch (@Pc(2266) IOException local2266) {
-												method3279();
+												logout();
 											}
 											return;
 										}
@@ -3298,7 +3298,7 @@ public class Protocol {
 	}
 
 	@OriginalMember(owner = "client!nm", name = "a", descriptor = "(Z)V")
-	public static void method3279() {
+	public static void logout() {
 		if (anInt5775 > 0) {
 			LoginManager.processLogout();
 		} else {
