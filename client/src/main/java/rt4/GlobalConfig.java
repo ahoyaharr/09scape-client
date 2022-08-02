@@ -44,13 +44,13 @@ public class GlobalConfig {
 	//endregion
 
 	// default distance is 28
-	public static int TILE_DISTANCE = 56;
-	public static int VIEW_DISTANCE = TILE_DISTANCE * 128;
-	public static float VIEW_FADE_DISTANCE = ((float) TILE_DISTANCE / 28.0f) * 256.0f;
+	public static int TILE_DISTANCE = 128;
+	public static int VIEW_DISTANCE = 10000;
+	public static float VIEW_FADE_DISTANCE = VIEW_DISTANCE;
 
 	public static boolean USE_SHIFT_CLICK = true;
 	public static boolean USE_TWEENING = true;
-	public static boolean BILINEAR_MINIMAP = true;
+	public static boolean BILINEAR_MINIMAP = false;
 	public static boolean MOUSEWHEEL_ZOOM = true;
 
 	public static int JS5_RESPONSE_TIMEOUT = 5000;

@@ -553,6 +553,8 @@ public final class client extends GameShell {
 			Chat.messages[local3506] = null;
 		}
 		MiniMenu.anInt5014 = 0;
+		Camera.pitchTarget = 512;
+		Camera.ZOOM = 1800;
 		Camera.horizontalPlayerOffset = 0;  // How off-center on the horizontal axis the player is relative to the camera. 0 means the player is centered.
 		LoginManager.mapFlagZ = 0;
 		Camera.yawTarget = 0;  // Start the camera facing true north
