@@ -261,14 +261,11 @@ public class Sprites {
 		} else {
 			hintMapEdge = local143;
 		}
-		@Pc(196) int local196 = (int) ((double) 21 * Math.random()) - 10;
-		local145 = (int) (Math.random() * 21.0D) - 10;
-		@Pc(210) int local210 = (int) (Math.random() * 21.0D) - 10;
-		@Pc(217) int local217 = (int) (Math.random() * 41.0D) - 20;
+		/* This section of code used to generate a random R, G, and B value that
+		*  would be applied to map icons as a filter. Removing the random value
+		*  generation and call to the shading function (`SoftwareSprite.applyColorFilter(R, G, B)). */
+
 		@Pc(219) int local219;
-		for (local219 = 0; local219 < mapfunctions.length; local219++) {
-			mapfunctions[local219].method315(local145 + local217, local217 + local196, local217 + local210);
-		}
 		if (GlRenderer.enabled) {
 			mapfuncs = new Sprite[mapfunctions.length];
 			for (local219 = 0; local219 < mapfunctions.length; local219++) {

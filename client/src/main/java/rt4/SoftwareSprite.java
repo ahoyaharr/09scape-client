@@ -1270,7 +1270,7 @@ public class SoftwareSprite extends Sprite {
 	}
 
 	@OriginalMember(owner = "client!mm", name = "b", descriptor = "(III)V")
-	public final void method315(@OriginalArg(0) int arg0, @OriginalArg(1) int arg1, @OriginalArg(2) int arg2) {
+	public final void applyColorFilter(@OriginalArg(0) int arg0, @OriginalArg(1) int arg1, @OriginalArg(2) int arg2) {
 		for (@Pc(1) int local1 = 0; local1 < this.pixels.length; local1++) {
 			@Pc(11) int local11 = this.pixels[local1];
 			if (local11 != 0) {
