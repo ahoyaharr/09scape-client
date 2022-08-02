@@ -684,6 +684,9 @@ public final class Rasteriser {
 
 	@OriginalMember(owner = "client!hf", name = "a", descriptor = "(F)V")
 	public static void setBrightness(@OriginalArg(0) float brightness) {
+		if (HighlightConfig.simplifyMinimap) {
+			brightness = 0.7f;
+		}
 		randBrightness(brightness);
 		calculateBrightness();
 	}
@@ -3247,7 +3250,7 @@ public final class Rasteriser {
 	@OriginalMember(owner = "client!hf", name = "b", descriptor = "(F)V")
 	private static void randBrightness(@OriginalArg(0) float start) {
 		brightness = start;
-		brightness = (float) ((double) brightness + Math.random() * 0.03D - 0.015D);
+		brightness = (float) ((double) brightness + 0.5F * 0.03D - 0.015D);
 	}
 
 	@OriginalMember(owner = "client!hf", name = "d", descriptor = "()I")

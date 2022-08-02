@@ -579,7 +579,8 @@ public final class SoftwareModel extends Model {
 				Rasteriser.fillTexturedAlphaTriangle(anIntArray551[xIndex], anIntArray551[yIndex], anIntArray551[zIndex], anIntArray556[xIndex], anIntArray556[yIndex], anIntArray556[zIndex], this.polygonColors[arg0], this.polygonShadingColors1[arg0], this.polygonShadingColors2[arg0], anIntArray560[local141], anIntArray560[local146], anIntArray560[local151], anIntArray548[local141], anIntArray548[local146], anIntArray548[local151], anIntArray544[local141], anIntArray544[local146], anIntArray544[local151], this.textures[arg0]);
 			}
 		} else if (this.polygonShadingColors2[arg0] == -1) {
-			Rasteriser.fillTriangle(anIntArray551[xIndex], anIntArray551[yIndex], anIntArray551[zIndex], anIntArray556[xIndex], anIntArray556[yIndex], anIntArray556[zIndex], Rasteriser.palette[this.polygonColors[arg0] & 0xFFFF]);
+			int color = this.highlightColor > -1 ? this.highlightColor :  Rasteriser.palette[this.polygonColors[arg0] & 0xFFFF];
+			Rasteriser.fillTriangle(anIntArray551[xIndex], anIntArray551[yIndex], anIntArray551[zIndex], anIntArray556[xIndex], anIntArray556[yIndex], anIntArray556[zIndex], color);
 		} else {
 			//
 			if (this.highlightColor > -1) {  // Highlighting ignores pseudo-shading

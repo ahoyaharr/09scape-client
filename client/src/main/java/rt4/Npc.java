@@ -128,7 +128,7 @@ public final class Npc extends PathingEntity {
             }
 
             // UPDATE HIGHLIGHTING FOR NPCS HERE
-            boolean highlight = PlayerList.self.seqId == -1 & HighlightConfig.npcIDs.containsKey(this.type.id) && PlayerList.self.movementQueueSize == 0 && PlayerList.self.hitpointsBarVisibleUntil < (client.loop + 100);
+            boolean highlight = !GlRenderer.enabled && PlayerList.self.seqId == -1 & HighlightConfig.npcIDs.containsKey(this.type.id) && PlayerList.self.movementQueueSize == 0 && PlayerList.self.hitpointsBarVisibleUntil < (client.loop + 100);
             if (highlight) {
                 ((SoftwareModel) body).highlightColor = HighlightConfig.npcIDs.get(this.type.id);
             }

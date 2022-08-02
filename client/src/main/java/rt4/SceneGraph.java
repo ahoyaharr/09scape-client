@@ -1767,7 +1767,14 @@ public class SceneGraph {
 														if (GlRenderer.enabled) {
 															LightingManager.method2393(anInt3555, anInt3947, anInt4903, local24, local18, local21);
 														}
+														boolean highlight = !GlRenderer.enabled && HighlightConfig.objectIDs.containsKey(var25.getId()) && PlayerList.self.seqId == -1 && PlayerList.self.movementQueueSize == 0;
+														if (highlight) {
+															((SoftwareModel) var25.entity).highlightColor = HighlightConfig.objectIDs.get(var25.getId());
+														}
 														var25.entity.render(var25.anInt1714, anInt2886, anInt3038, anInt5205, anInt2222, var25.anInt1699 - anInt3555, var25.anInt1706 - anInt3947, var25.anInt1703 - anInt4903, var25.key, local24, null);
+														if (highlight) {
+															((SoftwareModel) var25.entity).highlightColor = -1;
+														}
 													}
 												}
 												if (GlRenderer.enabled) {
@@ -2116,7 +2123,7 @@ public class SceneGraph {
 														}
 													}
 
-													boolean highlight = HighlightConfig.objectIDs.containsKey(scenery.getId()) && PlayerList.self.seqId == -1 && PlayerList.self.movementQueueSize == 0;
+													boolean highlight = !GlRenderer.enabled && HighlightConfig.objectIDs.containsKey(scenery.getId()) && PlayerList.self.seqId == -1 && PlayerList.self.movementQueueSize == 0;
 													if (highlight) {
 														((SoftwareModel) scenery.entity).highlightColor = HighlightConfig.objectIDs.get(scenery.getId());
 													}
@@ -3184,14 +3191,14 @@ public class SceneGraph {
 
 	@OriginalMember(owner = "client!fh", name = "a", descriptor = "(IIIILclient!th;JLclient!th;Lclient!th;)V")
 	public static void setObjStack(@OriginalArg(0) int level, @OriginalArg(1) int x, @OriginalArg(2) int z, @OriginalArg(3) int arg3, @OriginalArg(4) Entity primary, @OriginalArg(5) long arg5, @OriginalArg(6) Entity secondary, @OriginalArg(7) Entity tertiary) {
-		@Pc(3) ObjStackEntity entity = new ObjStackEntity();
-		entity.primary = primary;
-		entity.xFine = x * 128 + 64;
-		entity.zFine = z * 128 + 64;
-		entity.anInt3057 = arg3;
-		entity.key = arg5;
-		entity.secondary = secondary;
-		entity.tertiary = tertiary;
+		@Pc(3) ObjStackEntity objStackEntity = new ObjStackEntity();
+		objStackEntity.primary = primary;
+		objStackEntity.xFine = x * 128 + 64;
+		objStackEntity.zFine = z * 128 + 64;
+		objStackEntity.anInt3057 = arg3;
+		objStackEntity.key = arg5;
+		objStackEntity.secondary = secondary;
+		objStackEntity.tertiary = tertiary;
 		@Pc(34) int local34 = 0;
 		@Pc(42) Tile local42 = tiles[level][x][z];
 		if (local42 != null) {
@@ -3205,11 +3212,11 @@ public class SceneGraph {
 				}
 			}
 		}
-		entity.anInt3063 = -local34;
+		objStackEntity.anInt3063 = -local34;
 		if (tiles[level][x][z] == null) {
 			tiles[level][x][z] = new Tile(level, x, z);
 		}
-		tiles[level][x][z].objStack = entity;
+		tiles[level][x][z].objStack = objStackEntity;
 	}
 
 	@OriginalMember(owner = "client!fh", name = "a", descriptor = "(Lclient!th;IIIII)V")

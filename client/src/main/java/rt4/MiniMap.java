@@ -305,7 +305,7 @@ public class MiniMap {
 
 							for (ObjStackNode current = (ObjStackNode) itemStackOnTile.head(); current != null; current = (ObjStackNode) itemStackOnTile.next()) {
 								ObjType objType = ObjTypeList.get(current.value.type);
-								if (HighlightConfig.itemHighlightIDs.contains(objType.id)) {
+								if (HighlightConfig.itemHighlightIDs.containsKey(objType.id)) {
 									itemDot = Sprites.mapdots[3];
 								}
 							}
