@@ -408,20 +408,18 @@ public abstract class Font extends SecondaryNode {
 	}
 
 	@OriginalMember(owner = "client!rk", name = "a", descriptor = "(Lclient!na;IIIILjava/util/Random;I)I")
-	public final int method2859(@OriginalArg(0) JagString arg0, @OriginalArg(1) int arg1, @OriginalArg(2) int arg2, @OriginalArg(5) Random arg3, @OriginalArg(6) int arg4) {
+	public final int method2859(@OriginalArg(0) JagString arg0, @OriginalArg(1) int arg1, @OriginalArg(2) int arg2, @OriginalArg(5) Random random, @OriginalArg(6) int arg4) {
 		if (arg0 == null) {
 			return 0;
 		}
-		arg3.setSeed(arg4);
-		this.setColors(16777215, 0, (arg3.nextInt() & 0x1F) + 192);
+		/* For some reason, this function uses arg10 to reseed arg9, which is a Random object.
+		 * The random object is then used to adjust the color of the font. This makes no sense, so lets remove. */
+		this.setColors(16777215, 0, 192);
 		@Pc(21) int local21 = arg0.length();
 		@Pc(24) int[] local24 = new int[local21];
 		@Pc(26) int local26 = 0;
 		for (@Pc(28) int local28 = 0; local28 < local21; local28++) {
 			local24[local28] = local26;
-			if ((arg3.nextInt() & 0x3) == 0) {
-				local26++;
-			}
 		}
 		this.renderOffset(arg0, arg1, arg2, local24, null);
 		return local26;
@@ -851,17 +849,15 @@ public abstract class Font extends SecondaryNode {
 		if (arg0 == null) {
 			return 0;
 		}
-		arg9.setSeed(arg10);
-		this.setColors(arg5, arg6, (arg9.nextInt() & 0x1F) + 192);
+		/* For some reason, this function uses arg10 to reseed arg9, which is a Random object.
+		* The random object is then used to adjust the color of the font. This makes no sense, so lets remove. */
+		this.setColors(arg5, arg6, 192);
 		@Pc(21) int local21 = arg0.length();
 		@Pc(24) int[] local24 = new int[local21];
 		@Pc(26) int local26 = 0;
 		@Pc(28) int local28;
 		for (local28 = 0; local28 < local21; local28++) {
 			local24[local28] = local26;
-			if ((arg9.nextInt() & 0x3) == 0) {
-				local26++;
-			}
 		}
 		local28 = arg1;
 		@Pc(50) int local50 = arg2 + this.paragraphTopPadding;
