@@ -848,7 +848,7 @@ public class WorldMap {
 											}
 											if (local270 != 0 && local276 != 0) {
 												if (type.anInt11 == 0) {
-													sprite.method1398(local47, local145 + local162 - local276, local270, local276);
+													sprite.drawScenery(local47, local145 + local162 - local276, local270, local276);
 												} else {
 													sprite.method1390(local47, local145 + local162 - local276, local270, local276, type.anInt11);
 												}

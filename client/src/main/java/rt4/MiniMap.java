@@ -224,13 +224,13 @@ public class MiniMap {
 			SoftwareRaster.setClip(arg2, arg1, arg2 + arg3.width, arg1 + arg3.height);
 		}
 		if (state != 2 && state != 5 && sprite != null) {
-			@Pc(48) int local48 = hiddenMinimapYaw + (int) Camera.yawTarget & 0x7FF;
+			@Pc(48) int yawLevel = hiddenMinimapYaw + (int) Camera.yawTarget & 0x7FF;
 			@Pc(57) int local57 = PlayerList.self.xFine / 32 + 48;
 			@Pc(67) int local67 = 464 - PlayerList.self.zFine / 32;
 			if (GlRenderer.enabled) {
-				((GlSprite) sprite).renderRotatedTransparent(arg2, arg1, arg3.width, arg3.height, local57, local67, local48, zoom + 256, (GlSprite) arg3.method489(false));
+				((GlSprite) sprite).renderRotatedTransparent(arg2, arg1, arg3.width, arg3.height, local57, local67, yawLevel, zoom + 256, (GlSprite) arg3.method489(false));
 			} else {
-				((SoftwareSprite) sprite).renderRotated(arg2, arg1, arg3.width, arg3.height, local57, local67, local48, zoom + 256, arg3.anIntArray37, arg3.anIntArray45);
+				((SoftwareSprite) sprite).renderRotated(arg2, arg1, arg3.width, arg3.height, local57, local67, yawLevel, zoom + 256, arg3.anIntArray37, arg3.anIntArray45);
 			}
 			@Pc(146) int local146;
 			@Pc(181) int local181;
@@ -244,8 +244,8 @@ public class MiniMap {
 				for (@Pc(117) int local117 = 0; local117 < LoginManager.mapElementList.anInt5074; local117++) {
 					if (LoginManager.mapElementList.method3892(local117)) {
 						local146 = (LoginManager.mapElementList.aShortArray73[local117] - Camera.originX) * 4 + 2 - PlayerList.self.xFine / 32;
-						local150 = MathUtils.sin[local48];
-						local154 = MathUtils.cos[local48];
+						local150 = MathUtils.sin[yawLevel];
+						local154 = MathUtils.cos[yawLevel];
 						@Pc(156) Font local156 = Fonts.p11Full;
 						@Pc(164) int local164 = local150 * 256 / (zoom + 256);
 						local181 = (LoginManager.mapElementList.aShortArray72[local117] - Camera.originZ) * 4 + 2 - PlayerList.self.zFine / 32;
@@ -379,27 +379,27 @@ public class MiniMap {
 
 			@Pc(756) MapMarker[] local756 = hintMapMarkers;
 			for (local181 = 0; local181 < local756.length; local181++) {
-				@Pc(770) MapMarker local770 = local756[local181];
-				if (local770 != null && local770.type != 0 && client.loop % 20 < 10) {
-					if (local770.type == 1 && local770.actorTargetId >= 0 && local770.actorTargetId < NpcList.npcs.length) {
-						@Pc(804) Npc local804 = NpcList.npcs[local770.actorTargetId];
+				@Pc(770) MapMarker mapMarker = local756[local181];
+				if (mapMarker != null && mapMarker.type != 0 && client.loop % 20 < 10) {
+					if (mapMarker.type == 1 && mapMarker.actorTargetId >= 0 && mapMarker.actorTargetId < NpcList.npcs.length) {
+						@Pc(804) Npc local804 = NpcList.npcs[mapMarker.actorTargetId];
 						if (local804 != null) {
 							local231 = local804.xFine / 32 - PlayerList.self.xFine / 32;
 							local200 = local804.zFine / 32 - PlayerList.self.zFine / 32;
-							method1960(local770.anInt4048, arg1, arg2, local231, local200, arg3);
+							method1960(mapMarker.anInt4048, arg1, arg2, local231, local200, arg3);
 						}
 					}
-					if (local770.type == 2) {
-						local154 = (local770.targetX - Camera.originX) * 4 + 2 - PlayerList.self.xFine / 32;
-						local231 = (-Camera.originZ + local770.anInt4046) * 4 + 2 - PlayerList.self.zFine / 32;
-						method1960(local770.anInt4048, arg1, arg2, local154, local231, arg3);
+					if (mapMarker.type == 2) {
+						local154 = (mapMarker.targetX - Camera.originX) * 4 + 2 - PlayerList.self.xFine / 32;
+						local231 = (-Camera.originZ + mapMarker.anInt4046) * 4 + 2 - PlayerList.self.zFine / 32;
+						method1960(mapMarker.anInt4048, arg1, arg2, local154, local231, arg3);
 					}
-					if (local770.type == 10 && local770.actorTargetId >= 0 && PlayerList.players.length > local770.actorTargetId) {
-						@Pc(905) Player local905 = PlayerList.players[local770.actorTargetId];
+					if (mapMarker.type == 10 && mapMarker.actorTargetId >= 0 && PlayerList.players.length > mapMarker.actorTargetId) {
+						@Pc(905) Player local905 = PlayerList.players[mapMarker.actorTargetId];
 						if (local905 != null) {
 							local200 = local905.zFine / 32 - PlayerList.self.zFine / 32;
 							local231 = local905.xFine / 32 - PlayerList.self.xFine / 32;
-							method1960(local770.anInt4048, arg1, arg2, local231, local200, arg3);
+							method1960(mapMarker.anInt4048, arg1, arg2, local231, local200, arg3);
 						}
 					}
 				}
@@ -490,37 +490,38 @@ public class MiniMap {
 	}
 
 	@OriginalMember(owner = "client!cj", name = "a", descriptor = "(ILclient!pb;ZIIII)Z")
-	public static boolean renderScenery(@OriginalArg(0) int arg0, @OriginalArg(1) LocType arg1, @OriginalArg(5) int arg2, @OriginalArg(6) int arg3) {
-		@Pc(10) MsiType msiType = MsiTypeList.get(arg1.mapSceneId);
+	public static boolean renderScenery(@OriginalArg(0) int arg0, @OriginalArg(1) LocType locType, @OriginalArg(5) int arg2, @OriginalArg(6) int arg3) {
+		@Pc(10) MsiType msiType = MsiTypeList.get(locType.mapSceneId);
 		if (msiType.spriteId == -1) {
 			return true;
 		}
-		if (arg1.mapSceneRotated) {
-			@Pc(24) int local24 = arg3 + arg1.mapSceneAngleOffset;
+		if (locType.mapSceneRotated) {
+			@Pc(24) int local24 = arg3 + locType.mapSceneAngleOffset;
 			arg3 = local24 & 0x3;
 		} else {
 			arg3 = 0;
 		}
-		@Pc(42) SoftwareIndexedSprite local42 = msiType.getSprite(arg3);
-		if (local42 == null) {
+		@Pc(42) SoftwareIndexedSprite sprite = msiType.getSprite(arg3);
+		if (sprite == null) {
 			return false;
 		}
-		@Pc(49) int local49 = arg1.width;
-		@Pc(52) int local52 = arg1.length;
+		@Pc(49) int local49 = locType.width;
+		@Pc(52) int local52 = locType.length;
 		if ((arg3 & 0x1) == 1) {
-			local49 = arg1.length;
-			local52 = arg1.width;
+			local49 = locType.length;
+			local52 = locType.width;
 		}
-		@Pc(66) int local66 = local42.innerWidth;
-		@Pc(69) int local69 = local42.innerHeight;
+		@Pc(66) int local66 = sprite.innerWidth;
+		@Pc(69) int local69 = sprite.innerHeight;
 		if (msiType.aBoolean2) {
 			local69 = local52 * 4;
 			local66 = local49 * 4;
 		}
 		if (msiType.anInt11 == 0) {
-			local42.method1398(arg0 * 4 + 48, (-local52 + -arg2 + MAP_SIZE) * 4 + 48, local66, local69);
+			// This seems to be the method that always gets hit
+			sprite.drawScenery(arg0 * 4 + 48, (-local52 + -arg2 + MAP_SIZE) * 4 + 48, local66, local69);
 		} else {
-			local42.method1390(arg0 * 4 + 48, (-local52 + -arg2 + MAP_SIZE) * 4 + 48, local66, local69, msiType.anInt11);
+			sprite.method1390(arg0 * 4 + 48, (-local52 + -arg2 + MAP_SIZE) * 4 + 48, local66, local69, msiType.anInt11);
 		}
 		return true;
 	}
