@@ -1672,8 +1672,8 @@ public class SceneGraph {
 													return;
 												}
 											} while (!local8.aBoolean46);
-											local18 = local8.anInt669;
-											local21 = local8.anInt666;
+											local18 = local8.x;
+											local21 = local8.y;
 											local24 = local8.anInt672;
 											local27 = local8.anInt668;
 											local31 = tiles[local24];

@@ -62,7 +62,7 @@ public final class Tile extends Node {
 	public final int[] interiorFlags = new int[5];
 
 	@OriginalMember(owner = "client!bj", name = "H", descriptor = "I")
-	public final int anInt666;
+	public final int y;
 
 	@OriginalMember(owner = "client!bj", name = "W", descriptor = "I")
 	public int anInt672;
@@ -71,12 +71,12 @@ public final class Tile extends Node {
 	public final int anInt668;
 
 	@OriginalMember(owner = "client!bj", name = "R", descriptor = "I")
-	public final int anInt669;
+	public final int x;
 
 	@OriginalMember(owner = "client!bj", name = "<init>", descriptor = "(III)V")
-	public Tile(@OriginalArg(0) int arg0, @OriginalArg(1) int arg1, @OriginalArg(2) int arg2) {
-		this.anInt666 = arg2;
-		this.anInt668 = this.anInt672 = arg0;
-		this.anInt669 = arg1;
+	public Tile(@OriginalArg(0) int level, @OriginalArg(1) int x, @OriginalArg(2) int y) {
+		this.y = y;
+		this.anInt668 = this.anInt672 = level;
+		this.x = x;
 	}
 }
