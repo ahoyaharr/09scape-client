@@ -120,7 +120,9 @@ public final class Loc extends Entity {
 				}
 			}
 			if (arg7 && this.aClass144_2.anInt5362 != -1) {
-				this.anInt1297 = (int) (Math.random() * (double) this.aClass144_2.frames.length);
+				// This used to be a random value between 0 and this.aClass144_2.frames.length, which is a SeqType.
+				// It gets read in a lot of places, and one of the things to affect is the camera offset.
+				this.anInt1297 = 0;
 				this.anInt1304 = this.anInt1297 + 1;
 				if (this.anInt1304 >= this.aClass144_2.frames.length) {
 					this.anInt1304 -= this.aClass144_2.anInt5362;
@@ -128,7 +130,9 @@ public final class Loc extends Entity {
 						this.anInt1304 = -1;
 					}
 				}
-				this.anInt1317 = (int) (Math.random() * (double) this.aClass144_2.anIntArray474[this.anInt1297]) + 1;
+				// This used to be a value between 0 and some value that comes out of this.aClass144_2, which is a SeqType.
+				// It gets read in a lot of places, and one of the things to affect is the camera offset.
+				this.anInt1317 = 0;
 				this.anInt1320 = client.loop - this.anInt1317;
 			}
 		}
@@ -302,8 +306,10 @@ public final class Loc extends Entity {
 			}
 			if (this.aClass144_2 != null) {
 				if (local19.aBoolean209 && this.aClass144_2.anInt5362 != -1) {
-					this.anInt1297 = (int) (Math.random() * (double) this.aClass144_2.frames.length);
-					this.anInt1320 -= (int) (Math.random() * (double) this.aClass144_2.anIntArray474[this.anInt1297]);
+//					this.anInt1297 = (int) (Math.random() * (double) this.aClass144_2.frames.length);
+//					this.anInt1320 -= (int) (Math.random() * (double) this.aClass144_2.anIntArray474[this.anInt1297]);
+					this.anInt1297 = (int) (0.5f * (double) this.aClass144_2.frames.length);
+					this.anInt1320 -= (int) (0.5f * (double) this.aClass144_2.anIntArray474[this.anInt1297]);
 				} else {
 					this.anInt1297 = 0;
 					this.anInt1320 = client.loop - 1;
