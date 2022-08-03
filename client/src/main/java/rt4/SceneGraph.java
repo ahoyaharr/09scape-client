@@ -144,9 +144,11 @@ public class SceneGraph {
 	@OriginalMember(owner = "client!ja", name = "q", descriptor = "I")
 	public static int currentChunkX;
 	@OriginalMember(owner = "client!gm", name = "R", descriptor = "I")
-	public static int anInt2293 = (int) (Math.random() * 17.0D) - 8;
+	/* anInt2293 and anInt4272 had random values that seemed to the colors
+	* of the tiles when rendered on the minimap. Removing this randomness for now. */
+	public static int anInt2293 = 0;
 	@OriginalMember(owner = "client!ok", name = "c", descriptor = "I")
-	public static int anInt4272 = (int) (Math.random() * 33.0D) - 16;
+	public static int anInt4272 = 0;
 	@OriginalMember(owner = "client!rj", name = "R", descriptor = "I")
 	public static int anInt4903;
 	@OriginalMember(owner = "client!pi", name = "U", descriptor = "I")
@@ -794,14 +796,17 @@ public class SceneGraph {
 					}
 				}
 			}
-			anInt4272 += (int) (Math.random() * 5.0D) - 2;
+
+			/* anInt2293 and anInt4272 had random values that seemed to the colors
+			 * of the tiles when rendered on the minimap. Removing this randomness for now. */
+			
 			if (anInt4272 < -16) {
 				anInt4272 = -16;
 			}
 			if (anInt4272 > 16) {
 				anInt4272 = 16;
 			}
-			anInt2293 += (int) (Math.random() * 5.0D) - 2;
+
 			if (anInt2293 < -8) {
 				anInt2293 = -8;
 			}
