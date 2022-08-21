@@ -996,7 +996,7 @@ public class LoginManager {
 				}
 			}
 		}
-		SceneGraph.init(GlRenderer.enabled ? GlobalConfig.TILE_DISTANCE : 25, hasUnderWaterMap);
+		SceneGraph.init(GlRenderer.enabled ? GlobalConfig.TILE_DISTANCE : GlobalConfig.TILE_DISTANCE, hasUnderWaterMap);
 		for (i = 0; i < 4; i++) {
 			PathFinder.collisionMaps[i].clear();
 		}

@@ -124,7 +124,7 @@ public final class Npc extends PathingEntity {
             }
 
             // UPDATE HIGHLIGHTING FOR NPCS HERE
-            boolean highlight = !GlRenderer.enabled && PlayerList.self.seqId == -1 & HighlightConfig.npcIDs.containsKey(this.type.id) && PlayerList.self.movementQueueSize == 0 && PlayerList.self.hitpointsBarVisibleUntil < (client.loop + 100);
+            boolean highlight = !GlRenderer.enabled && HighlightConfig.npcIDs.containsKey(this.type.id) && PlayerList.self.movementQueueSize < 2 && PlayerList.self.hitpointsBarVisibleUntil < (client.loop + 100); // && PlayerList.self.seqId == -1;
             if (highlight) {
                 ((SoftwareModel) body).highlightColor = HighlightConfig.npcIDs.get(this.type.id);
             }
@@ -147,6 +147,23 @@ public final class Npc extends PathingEntity {
 
             model.render(orientation, arg1, arg2, arg3, arg4, x, z, y, key, arg9, this.particleSystem);
         }
+    }
+
+    public final void render(
+            @OriginalArg(0) int orientation,
+            @OriginalArg(1) int arg1,
+            @OriginalArg(2) int arg2,
+            @OriginalArg(3) int arg3,
+            @OriginalArg(4) int arg4,
+            @OriginalArg(5) int x,
+            @OriginalArg(6) int z,
+            @OriginalArg(7) int y,
+            @OriginalArg(8) long key,
+            @OriginalArg(9) int arg9,
+            @OriginalArg(10) ParticleSystem arg10,
+            int highlightColor) {
+        // TODO: Implement(?)
+        this.render(orientation, arg1, arg2, arg3, arg4, x, z, y, key, arg9, arg10);
     }
 
     @OriginalMember(owner = "client!km", name = "b", descriptor = "(I)I")

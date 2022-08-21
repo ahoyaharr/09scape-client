@@ -92,7 +92,13 @@ public final class SpotAnim extends Entity {
 		}
 	}
 
-	@OriginalMember(owner = "client!bh", name = "a", descriptor = "(ZI)V")
+	@Override
+	public final void render(@OriginalArg(0) int arg0, @OriginalArg(1) int arg1, @OriginalArg(2) int arg2, @OriginalArg(3) int arg3, @OriginalArg(4) int arg4, @OriginalArg(5) int arg5, @OriginalArg(6) int arg6, @OriginalArg(7) int arg7, @OriginalArg(8) long arg8, @OriginalArg(9) int arg9, @OriginalArg(10) ParticleSystem arg10, int highlightColor) {
+		// TODO Something wrong here
+		//		this.render(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+	}
+
+		@OriginalMember(owner = "client!bh", name = "a", descriptor = "(ZI)V")
 	public final void method558(@OriginalArg(1) int arg0) {
 		if (this.aBoolean41) {
 			return;

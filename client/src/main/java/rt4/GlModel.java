@@ -1024,7 +1024,7 @@ public final class GlModel extends Model {
 				}
 				if (anInt3582 >= local187 && anInt3582 <= local191 && RawModel.anInt1053 >= local206 && RawModel.anInt1053 <= local210) {
 					if (this.aBoolean303) {
-						Model.keys[MiniMenu.anInt7++] = arg8;
+						Model.keys[MiniMenu.mousedOverEntitiesIndex++] = arg8;
 					} else {
 						if (anIntArray468.length < this.anInt5296) {
 							anIntArray468 = new int[this.anInt5296];
@@ -1043,7 +1043,7 @@ public final class GlModel extends Model {
 									@Pc(703) short local703 = this.aShortArray82[local362];
 									@Pc(708) short local708 = this.aShortArray83[local362];
 									if (this.method4118(anInt3582, RawModel.anInt1053, anIntArray467[local698], anIntArray467[local703], anIntArray467[local708], anIntArray468[local698], anIntArray468[local703], anIntArray468[local708])) {
-										Model.keys[MiniMenu.anInt7++] = arg8;
+										Model.keys[MiniMenu.mousedOverEntitiesIndex++] = arg8;
 										break label118;
 									}
 									local362++;
@@ -1096,7 +1096,13 @@ public final class GlModel extends Model {
 		local744.glPopMatrix();
 	}
 
-	@OriginalMember(owner = "client!td", name = "m", descriptor = "()V")
+	@Override
+	public final void render(@OriginalArg(0) int arg0, @OriginalArg(1) int arg1, @OriginalArg(2) int arg2, @OriginalArg(3) int arg3, @OriginalArg(4) int arg4, @OriginalArg(5) int arg5, @OriginalArg(6) int arg6, @OriginalArg(7) int arg7, @OriginalArg(8) long arg8, @OriginalArg(9) int arg9, @OriginalArg(10) ParticleSystem arg10, int highlightColor) {
+		// TODO: We probably shouldn't do anything here if we don't want to enable highlighting in high detail mode
+		this.render(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg7, arg9, arg10);
+	}
+
+		@OriginalMember(owner = "client!td", name = "m", descriptor = "()V")
 	public final void method4093() {
 		if (this.aShortArray76 == null) {
 			this.method4578();

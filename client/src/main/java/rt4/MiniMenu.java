@@ -125,7 +125,7 @@ public class MiniMenu {
 	@OriginalMember(owner = "client!jl", name = "v", descriptor = "I")
 	public static int anInt3096 = 0;
 	@OriginalMember(owner = "client!aa", name = "a", descriptor = "I")
-	public static int anInt7 = 0;
+	public static int mousedOverEntitiesIndex = 0;
 	@OriginalMember(owner = "client!cl", name = "Y", descriptor = "I")
 	public static int anInt1092 = -1;
 	@OriginalMember(owner = "client!p", name = "e", descriptor = "I")
@@ -296,6 +296,10 @@ public class MiniMenu {
 
 	@OriginalMember(owner = "client!hj", name = "a", descriptor = "(IJBLclient!na;ISLclient!na;I)V")
 	public static void add(@OriginalArg(0) int cursor, @OriginalArg(1) long key, @OriginalArg(3) JagString optionBase, @OriginalArg(4) int arg3, @OriginalArg(5) short action, @OriginalArg(6) JagString option, @OriginalArg(7) int arg6) {
+		// Debug point to find mouseover spot
+		if (option != null && option.toString().equals("Cross")) {
+			System.out.println(option.toString());
+		}
 		if (Cs1ScriptRunner.aBoolean108 || size >= 500) {
 			return;
 		}
@@ -1118,7 +1122,7 @@ public class MiniMenu {
 			}
 		}
 		@Pc(112) long local112 = -1L;
-		for (local15 = 0; local15 < anInt7; local15++) {
+		for (local15 = 0; local15 < mousedOverEntitiesIndex; local15++) {  // anInt7 seems to be the number of entities that we are currently mousing over
 			@Pc(121) long key = Model.keys[local15];
 			x = (int) key & 0x7F;
 			@Pc(133) int local133 = (int) key >> 29 & 0x3;
@@ -1591,6 +1595,28 @@ public class MiniMenu {
 
 	@OriginalMember(owner = "client!ej", name = "h", descriptor = "(I)V")
 	public static void leftClickAction() {
+//		if (size > 2) {
+//			System.out.println(getOp(3).toString());
+//		}
+
+		// This has some really weird side effects right now
+//        if (HighlightConfig.replaceLeftClickOptions) {
+//            for (int i = 1; i <= size; i++) {
+//                try {
+//                    String option = getOp(i).toString().split(" ")[0];
+//                    if (HighlightConfig.defaultLeftClick.contains(option)) {
+//                        anInt3953 = 0;
+//                        doAction(i);
+//                        return;
+//                    }
+//                } catch (NullPointerException e) {
+//                    break;
+//                }
+//
+//            }
+//        }
+
+
 		if (anInt3953 == 2) {
 			if (ScriptRunner.anInt3751 == Mouse.anInt5850 && ScriptRunner.anInt1892 == Mouse.anInt5895) {
 				anInt3953 = 0;

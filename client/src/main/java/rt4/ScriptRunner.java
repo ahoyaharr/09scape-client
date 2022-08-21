@@ -286,10 +286,10 @@ public final class ScriptRunner {
 		}
 		if (Cs1ScriptRunner.aBoolean108 || anInt3751 < arg2 || anInt3751 >= arg3 + arg2 || arg4 > anInt1892 || arg0 + arg4 <= anInt1892) {
 			aBoolean77 = false;
-			MiniMenu.anInt7 = 0;
+			MiniMenu.mousedOverEntitiesIndex = 0;
 		} else {
 			aBoolean77 = true;
-			MiniMenu.anInt7 = 0;
+			MiniMenu.mousedOverEntitiesIndex = 0;
 			local171 = Rasteriser.screenUpperX;
 			@Pc(344) int local344 = Rasteriser.screenLowerY;
 			local127 = Rasteriser.screenLowerX;

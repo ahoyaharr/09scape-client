@@ -746,6 +746,9 @@ public final class SoftwareModel extends Model {
 	@OriginalMember(owner = "client!w", name = "a", descriptor = "(IIIIIIIIJILclient!ga;)V")
 	@Override
 	public final void render(@OriginalArg(0) int arg0, @OriginalArg(1) int arg1, @OriginalArg(2) int arg2, @OriginalArg(3) int arg3, @OriginalArg(4) int arg4, @OriginalArg(5) int arg5, @OriginalArg(6) int arg6, @OriginalArg(7) int arg7, @OriginalArg(8) long key, @OriginalArg(9) int arg9, @OriginalArg(10) ParticleSystem arg10) {
+		if (key >> 32 == 26808) {
+			int i = 0;
+		}
 		if (!this.boundsValid) {
 			this.calculateBounds();
 		}
@@ -850,7 +853,7 @@ public final class SoftwareModel extends Model {
 				}
 				if (GlModel.anInt3582 >= local204 && GlModel.anInt3582 <= local208 && RawModel.anInt1053 >= local223 && RawModel.anInt1053 <= local227) {
 					if (this.aBoolean303) {
-						Model.keys[MiniMenu.anInt7++] = key;
+						Model.keys[MiniMenu.mousedOverEntitiesIndex++] = key;
 					} else {
 						SomeBooleanPassedToDraw2 = true;
 					}
@@ -896,7 +899,14 @@ public final class SoftwareModel extends Model {
 		}
 	}
 
-	@OriginalMember(owner = "client!w", name = "a", descriptor = "(II[[I[[IIIIZ)Lclient!w;")
+	public final void render(@OriginalArg(0) int arg0, @OriginalArg(1) int arg1, @OriginalArg(2) int arg2, @OriginalArg(3) int arg3, @OriginalArg(4) int arg4, @OriginalArg(5) int arg5, @OriginalArg(6) int arg6, @OriginalArg(7) int arg7, @OriginalArg(8) long key, @OriginalArg(9) int arg9, @OriginalArg(10) ParticleSystem arg10, int highlightColor) {
+		this.highlightColor = highlightColor;
+		render(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, key, arg9, arg10);
+		this.highlightColor = -1;
+	}
+
+
+		@OriginalMember(owner = "client!w", name = "a", descriptor = "(II[[I[[IIIIZ)Lclient!w;")
 	public final SoftwareModel method4586(@OriginalArg(0) int arg0, @OriginalArg(1) int arg1, @OriginalArg(2) int[][] arg2, @OriginalArg(3) int[][] arg3, @OriginalArg(4) int arg4, @OriginalArg(5) int arg5, @OriginalArg(6) int arg6, @OriginalArg(7) boolean arg7) {
 		if (!this.boundsValid) {
 			this.calculateBounds();
@@ -1210,7 +1220,7 @@ public final class SoftwareModel extends Model {
 			if (local75 < 0 || local79 < 0 || local86 < 0 || local75 > Rasteriser.width || local79 > Rasteriser.width || local86 > Rasteriser.width) {
 				Rasteriser.testX = true;
 			}
-			if (this.textures != null && this.textures[arg0] != -1) {
+			if (this.textures != null && this.textures[arg0] != -1 && this.highlightColor == -1) {
 				if (this.aByteArray74 == null || this.aByteArray74[arg0] == -1) {
 					local709 = local10;
 					local714 = local15;
@@ -1222,13 +1232,18 @@ public final class SoftwareModel extends Model {
 					local719 = this.textureFacesN[local704];
 				}
 				if (this.polygonShadingColors2[arg0] == -1) {
+					System.out.println("case 5");
 					Rasteriser.fillTexturedAlphaTriangle(local99, local614, local618, local75, local79, local86, this.polygonColors[arg0], this.polygonColors[arg0], this.polygonColors[arg0], anIntArray560[local709], anIntArray560[local714], anIntArray560[local719], anIntArray548[local709], anIntArray548[local714], anIntArray548[local719], anIntArray544[local709], anIntArray544[local714], anIntArray544[local719], this.textures[arg0]);
 				} else {
+					System.out.println("case 6");
 					Rasteriser.fillTexturedAlphaTriangle(local99, local614, local618, local75, local79, local86, anIntArray553[0], anIntArray553[1], anIntArray553[2], anIntArray560[local709], anIntArray560[local714], anIntArray560[local719], anIntArray548[local709], anIntArray548[local714], anIntArray548[local719], anIntArray544[local709], anIntArray544[local714], anIntArray544[local719], this.textures[arg0]);
 				}
-			} else if (this.polygonShadingColors2[arg0] == -1) {
-				Rasteriser.fillTriangle(local99, local614, local618, local75, local79, local86, Rasteriser.palette[this.polygonColors[arg0] & 0xFFFF]);
+			} else if (this.polygonShadingColors2[arg0] == -1 || this.highlightColor > -1) {
+				System.out.println("case 7");
+				int color = this.highlightColor > -1 ? this.highlightColor : Rasteriser.palette[this.polygonColors[arg0] & 0xFFFF];
+				Rasteriser.fillTriangle(local99, local614, local618, local75, local79, local86, color);
 			} else {
+				System.out.println("case 8");
 				Rasteriser.fillGouraudTriangle(local99, local614, local618, local75, local79, local86, anIntArray553[0], anIntArray553[1], anIntArray553[2]);
 			}
 		}
@@ -1251,17 +1266,21 @@ public final class SoftwareModel extends Model {
 			}
 			@Pc(984) short local984 = this.textures[arg0];
 			if (this.polygonShadingColors2[arg0] == -1) {
+				System.out.println("case 1");
 				Rasteriser.fillTexturedAlphaTriangle(local99, local614, local618, local75, local79, local86, this.polygonColors[arg0], this.polygonColors[arg0], this.polygonColors[arg0], anIntArray560[local709], anIntArray560[local714], anIntArray560[local719], anIntArray548[local709], anIntArray548[local714], anIntArray548[local719], anIntArray544[local709], anIntArray544[local714], anIntArray544[local719], local984);
 				Rasteriser.fillTexturedAlphaTriangle(local99, local618, anIntArray547[3], local75, local86, anIntArray542[3], this.polygonColors[arg0], this.polygonColors[arg0], this.polygonColors[arg0], anIntArray560[local709], anIntArray560[local714], anIntArray560[local719], anIntArray548[local709], anIntArray548[local714], anIntArray548[local719], anIntArray544[local709], anIntArray544[local714], anIntArray544[local719], local984);
 			} else {
+				System.out.println("case 2");
 				Rasteriser.fillTexturedAlphaTriangle(local99, local614, local618, local75, local79, local86, anIntArray553[0], anIntArray553[1], anIntArray553[2], anIntArray560[local709], anIntArray560[local714], anIntArray560[local719], anIntArray548[local709], anIntArray548[local714], anIntArray548[local719], anIntArray544[local709], anIntArray544[local714], anIntArray544[local719], local984);
 				Rasteriser.fillTexturedAlphaTriangle(local99, local618, anIntArray547[3], local75, local86, anIntArray542[3], anIntArray553[0], anIntArray553[2], anIntArray553[3], anIntArray560[local709], anIntArray560[local714], anIntArray560[local719], anIntArray548[local709], anIntArray548[local714], anIntArray548[local719], anIntArray544[local709], anIntArray544[local714], anIntArray544[local719], local984);
 			}
 		} else if (this.polygonShadingColors2[arg0] == -1) {
+			System.out.println("case 3");
 			local709 = Rasteriser.palette[this.polygonColors[arg0] & 0xFFFF];
 			Rasteriser.fillTriangle(local99, local614, local618, local75, local79, local86, local709);
 			Rasteriser.fillTriangle(local99, local618, anIntArray547[3], local75, local86, anIntArray542[3], local709);
 		} else {
+			System.out.println("case 4");
 			Rasteriser.fillGouraudTriangle(local99, local614, local618, local75, local79, local86, anIntArray553[0], anIntArray553[1], anIntArray553[2]);
 			Rasteriser.fillGouraudTriangle(local99, local618, anIntArray547[3], local75, local86, anIntArray542[3], anIntArray553[0], anIntArray553[2], anIntArray553[3]);
 		}
@@ -1616,7 +1635,7 @@ public final class SoftwareModel extends Model {
 					}
 				} else {
 					if (someBool2 && this.method4589(GlModel.anInt3582 + Rasteriser.centerX, RawModel.anInt1053 + Rasteriser.centerY, anIntArray551[local51], anIntArray551[local56], anIntArray551[local61], local65, local69, local73)) {
-						Model.keys[MiniMenu.anInt7++] = key;
+						Model.keys[MiniMenu.mousedOverEntitiesIndex++] = key;
 						someBool2 = false;
 					}
 					if ((local65 - local69) * (anIntArray551[local61] - anIntArray551[local56]) - (anIntArray551[local51] - anIntArray551[local56]) * (local73 - local69) > 0) {
@@ -1687,8 +1706,12 @@ public final class SoftwareModel extends Model {
 						}
 					}
 					if (local51 > 64) {
-						local56 = anIntArray558[local11] - 64 - 1;
-						local590 = anIntArrayArray43[local56];
+						local56 = anIntArray558[local11] - 64 - 1;  // Index getting set to -65
+						if (local56 > anIntArrayArray43.length || local56 < 0) {
+							System.out.println("local56 oob || setting to 0");
+							local56 = 0;
+						}
+						local590 = anIntArrayArray43[local56];  // Out of bounds here
 						for (local65 = 0; local65 < anIntArray552[local56]; local65++) {
 							local69 = local590[local65];
 							if (local69 < 65536) {

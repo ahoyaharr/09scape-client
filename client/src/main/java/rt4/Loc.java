@@ -214,6 +214,17 @@ public final class Loc extends Entity {
 		}
 	}
 
+	@Override
+	public final void render(@OriginalArg(0) int arg0, @OriginalArg(1) int arg1, @OriginalArg(2) int arg2, @OriginalArg(3) int arg3, @OriginalArg(4) int arg4, @OriginalArg(5) int arg5, @OriginalArg(6) int arg6, @OriginalArg(7) int arg7, @OriginalArg(8) long arg8, @OriginalArg(9) int arg9, @OriginalArg(10) ParticleSystem arg10, int highlightColor) {
+		// TODO We probably do need to do something here, but unclear what
+		// Where are we going from Loc to SOftwareModel?
+		// TODO Highlighting logic should be here
+		@Pc(3) Entity local3 = this.method1049();
+		if (local3 != null) {
+			local3.render(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, this.aClass47_Sub1_2, highlightColor);
+		}
+	}
+
 	@OriginalMember(owner = "client!dc", name = "c", descriptor = "(I)V")
 	public final void method1046() {
 		if (this.aClass36_Sub1_2 != null) {

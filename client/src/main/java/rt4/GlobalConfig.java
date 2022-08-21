@@ -44,8 +44,8 @@ public class GlobalConfig {
 	//endregion
 
 	// default distance is 28
-	public static int TILE_DISTANCE = 128;
-	public static int VIEW_DISTANCE = 10000;
+	public static int TILE_DISTANCE = 175;
+	public static int VIEW_DISTANCE = 7500;
 	public static float VIEW_FADE_DISTANCE = VIEW_DISTANCE;
 
 	public static boolean USE_SHIFT_CLICK = true;

@@ -136,9 +136,9 @@ public class SceneGraph {
 	@OriginalMember(owner = "client!la", name = "i", descriptor = "[[[I")
 	public static int[][][] anIntArrayArrayArray12;
 	@OriginalMember(owner = "client!dl", name = "h", descriptor = "[[Z")
-	public static boolean[][] aBooleanArrayArray1;
+	public static boolean[][] booleanArrayRelatingToVisibility1;
 	@OriginalMember(owner = "client!ha", name = "k", descriptor = "[[Z")
-	public static boolean[][] aBooleanArrayArray3;
+	public static boolean[][] booleanArrayRelatingToVisibility2;
 	@OriginalMember(owner = "client!og", name = "b", descriptor = "I")
 	public static int currentChunkZ;
 	@OriginalMember(owner = "client!ja", name = "q", descriptor = "I")
@@ -677,8 +677,8 @@ public class SceneGraph {
 		scenery = new Scenery[5000];
 		sceneryLen = 0;
 		sceneryEntries = new Scenery[100];
-		aBooleanArrayArray1 = new boolean[visibility + visibility + 1][visibility + visibility + 1];
-		aBooleanArrayArray3 = new boolean[visibility + visibility + 2][visibility + visibility + 2];
+		booleanArrayRelatingToVisibility1 = new boolean[visibility + visibility + 1][visibility + visibility + 1];
+		booleanArrayRelatingToVisibility2 = new boolean[visibility + visibility + 2][visibility + visibility + 2];
 		aByteArrayArrayArray13 = new byte[4][width][length];
 	}
 
@@ -1652,6 +1652,7 @@ public class SceneGraph {
 			@Pc(904) int local904;
 			@Pc(153) Tile tile;
 			@Pc(1332) int local1332;
+			boolean highlight = !GlRenderer.enabled && PlayerList.self.movementQueueSize == 0 && PlayerList.self.seqId == -1;
 			do {
 				do {
 					do {
@@ -1761,7 +1762,13 @@ public class SceneGraph {
 															LightingManager.method2388(var22.anInt3049, anInt3555, anInt3947, anInt4903, local27, local18, local21);
 														}
 													}
-													var22.primary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, var22.xFine - anInt3555, var22.anInt3051 - anInt3947, var22.zFine - anInt4903, var22.key, local24, null);
+													int id = (int) (var22.key >> 32);
+													if (highlight && HighlightConfig.objectIDs.containsKey(id)) {
+														int highlightColor = HighlightConfig.objectIDs.get(id);
+														var22.primary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, var22.xFine - anInt3555, var22.anInt3051 - anInt3947, var22.zFine - anInt4903, var22.key, local24, null, highlightColor);
+													} else {
+														var22.primary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, var22.xFine - anInt3555, var22.anInt3051 - anInt3947, var22.zFine - anInt4903, var22.key, local24, null);
+													}
 												}
 												for (local65 = 0; local65 < tile.sceneryLen; local65++) {
 													var25 = tile.scenery[local65];
@@ -1769,13 +1776,11 @@ public class SceneGraph {
 														if (GlRenderer.enabled) {
 															LightingManager.method2393(anInt3555, anInt3947, anInt4903, local24, local18, local21);
 														}
-														boolean highlight = !GlRenderer.enabled && HighlightConfig.objectIDs.containsKey(var25.getId()) && PlayerList.self.seqId == -1 && PlayerList.self.movementQueueSize == 0;
-														if (highlight) {
-															((SoftwareModel) var25.entity).highlightColor = HighlightConfig.objectIDs.get(var25.getId());
-														}
-														var25.entity.render(var25.anInt1714, anInt2886, anInt3038, anInt5205, anInt2222, var25.anInt1699 - anInt3555, var25.anInt1706 - anInt3947, var25.anInt1703 - anInt4903, var25.key, local24, null);
-														if (highlight) {
-															((SoftwareModel) var25.entity).highlightColor = -1;
+														if (highlight && HighlightConfig.objectIDs.containsKey(var25.getId())) {
+															int highlightColor = HighlightConfig.objectIDs.get(var25.getId());
+															var25.entity.render(var25.anInt1714, anInt2886, anInt3038, anInt5205, anInt2222, var25.anInt1699 - anInt3555, var25.anInt1706 - anInt3947, var25.anInt1703 - anInt4903, var25.key, local24, null, highlightColor);
+														} else {
+															var25.entity.render(var25.anInt1714, anInt2886, anInt3038, anInt5205, anInt2222, var25.anInt1699 - anInt3555, var25.anInt1706 - anInt3947, var25.anInt1703 - anInt4903, var25.key, local24, null);
 														}
 													}
 												}
@@ -1854,17 +1859,28 @@ public class SceneGraph {
 													local8.anInt665 = anIntArray307[var10];
 													local8.anInt667 = 9 - local8.anInt665;
 												}
+												int id = (int) (local616.key >> 32);
 												if ((local616.anInt3049 & local65) != 0 && !method3850(local27, local18, local21, local616.anInt3049)) {
 													if (GlRenderer.enabled) {
 														LightingManager.method2393(anInt3555, anInt3947, anInt4903, local24, local18, local21);
 													}
-													local616.primary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local616.xFine - anInt3555, local616.anInt3051 - anInt3947, local616.zFine - anInt4903, local616.key, local24, null);
+													if (highlight && HighlightConfig.objectIDs.containsKey(id)) {
+														int color = HighlightConfig.objectIDs.get(id);
+														local616.primary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local616.xFine - anInt3555, local616.anInt3051 - anInt3947, local616.zFine - anInt4903, local616.key, local24, null, color);
+													} else {
+														local616.primary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local616.xFine - anInt3555, local616.anInt3051 - anInt3947, local616.zFine - anInt4903, local616.key, local24, null);
+													}
 												}
 												if ((local616.anInt3052 & local65) != 0 && !method3850(local27, local18, local21, local616.anInt3052)) {
 													if (GlRenderer.enabled) {
 														LightingManager.method2393(anInt3555, anInt3947, anInt4903, local24, local18, local21);
 													}
-													local616.secondary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local616.xFine - anInt3555, local616.anInt3051 - anInt3947, local616.zFine - anInt4903, local616.key, local24, null);
+													if (highlight && HighlightConfig.objectIDs.containsKey(id)) {
+														int color = HighlightConfig.objectIDs.get(id);
+														local616.secondary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local616.xFine - anInt3555, local616.anInt3051 - anInt3947, local616.zFine - anInt4903, local616.key, local24, null, color);
+													} else {
+														local616.secondary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local616.xFine - anInt3555, local616.anInt3051 - anInt3947, local616.zFine - anInt4903, local616.key, local24, null);
+													}
 												}
 											}
 											if (local619 != null && !method4611(local27, local18, local21, local619.primary.getMinY())) {
@@ -1917,7 +1933,14 @@ public class SceneGraph {
 													if (GlRenderer.enabled) {
 														LightingManager.method2393(anInt3555, anInt3947, anInt4903, local24, local18, local21);
 													}
-													local1001.entity.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local1001.xFine - anInt3555, local1001.anInt733 - anInt3947, local1001.zFine - anInt4903, local1001.key, local24, null);
+													// TODO GroundDecor.key >> 32 is disgusting, should really find a way to add this as a member
+													int id = (int) (local1001.key >> 32);
+													if (highlight && HighlightConfig.objectIDs.containsKey(id)) {
+														int highlightColor = HighlightConfig.objectIDs.get(id);
+														local1001.entity.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local1001.xFine - anInt3555, local1001.anInt733 - anInt3947, local1001.zFine - anInt4903, local1001.key, local24, null, highlightColor);
+													} else {
+														local1001.entity.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local1001.xFine - anInt3555, local1001.anInt733 - anInt3947, local1001.zFine - anInt4903, local1001.key, local24, null);
+													}
 													if (GlRenderer.enabled && local1001.aBoolean49) {
 														GlRenderer.method4159(local33);
 													}
@@ -2125,13 +2148,11 @@ public class SceneGraph {
 														}
 													}
 
-													boolean highlight = !GlRenderer.enabled && HighlightConfig.objectIDs.containsKey(scenery.getId()) && PlayerList.self.seqId == -1 && PlayerList.self.movementQueueSize == 0;
-													if (highlight) {
-														((SoftwareModel) scenery.entity).highlightColor = HighlightConfig.objectIDs.get(scenery.getId());
-													}
-													scenery.entity.render(scenery.anInt1714, anInt2886, anInt3038, anInt5205, anInt2222, scenery.anInt1699 - anInt3555, scenery.anInt1706 - anInt3947, scenery.anInt1703 - anInt4903, scenery.key, local24, null);
-													if (highlight) {
-														((SoftwareModel) scenery.entity).highlightColor = -1;
+													if (highlight && HighlightConfig.objectIDs.containsKey(scenery.getId())) {
+														int highlightColor = HighlightConfig.objectIDs.get(scenery.getId());
+														scenery.entity.render(scenery.anInt1714, anInt2886, anInt3038, anInt5205, anInt2222, scenery.anInt1699 - anInt3555, scenery.anInt1706 - anInt3947, scenery.anInt1703 - anInt4903, scenery.key, local24, null, highlightColor);
+													} else {
+														scenery.entity.render(scenery.anInt1714, anInt2886, anInt3038, anInt5205, anInt2222, scenery.anInt1699 - anInt3555, scenery.anInt1706 - anInt3947, scenery.anInt1703 - anInt4903, scenery.key, local24, null);
 													}
 
 												}
@@ -2149,7 +2170,8 @@ public class SceneGraph {
 											if (!local8.aBoolean47) {
 												break;
 											}
-										} catch (@Pc(1895) Exception local1895) {
+										} catch (@Pc(1895) Exception e) {
+											System.out.println(e.getMessage());
 											local8.aBoolean47 = false;
 											break;
 										}
@@ -2231,17 +2253,28 @@ public class SceneGraph {
 				}
 				@Pc(2275) Wall local2275 = local8.wall;
 				if (local2275 != null) {
+					int id = (int) (local2275.key >> 32);
 					if ((local2275.anInt3052 & local8.anInt670) != 0 && !method3850(local27, local18, local21, local2275.anInt3052)) {
 						if (GlRenderer.enabled) {
 							LightingManager.method2388(local2275.anInt3052, anInt3555, anInt3947, anInt4903, local27, local18, local21);
 						}
-						local2275.secondary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local2275.xFine - anInt3555, local2275.anInt3051 - anInt3947, local2275.zFine - anInt4903, local2275.key, local24, null);
+						if (highlight && HighlightConfig.objectIDs.containsKey(id)) {
+							int color = HighlightConfig.objectIDs.get(id);
+							local2275.secondary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local2275.xFine - anInt3555, local2275.anInt3051 - anInt3947, local2275.zFine - anInt4903, local2275.key, local24, null, color);
+						} else {
+							local2275.secondary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local2275.xFine - anInt3555, local2275.anInt3051 - anInt3947, local2275.zFine - anInt4903, local2275.key, local24, null);
+						}
 					}
 					if ((local2275.anInt3049 & local8.anInt670) != 0 && !method3850(local27, local18, local21, local2275.anInt3049)) {
 						if (GlRenderer.enabled) {
 							LightingManager.method2388(local2275.anInt3049, anInt3555, anInt3947, anInt4903, local27, local18, local21);
 						}
-						local2275.primary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local2275.xFine - anInt3555, local2275.anInt3051 - anInt3947, local2275.zFine - anInt4903, local2275.key, local24, null);
+						if (highlight && HighlightConfig.objectIDs.containsKey(id)) {
+							int color = HighlightConfig.objectIDs.get(id);
+							local2275.primary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local2275.xFine - anInt3555, local2275.anInt3051 - anInt3947, local2275.zFine - anInt4903, local2275.key, local24, null, color);
+						} else {
+							local2275.primary.render(0, anInt2886, anInt3038, anInt5205, anInt2222, local2275.xFine - anInt3555, local2275.anInt3051 - anInt3947, local2275.zFine - anInt4903, local2275.key, local24, null);
+						}
 					}
 				}
 			}
@@ -2918,11 +2951,11 @@ public class SceneGraph {
 		if (LightingManager.anInt4866 > length) {
 			LightingManager.anInt4866 = length;
 		}
-		@Pc(99) short local99;
+		@Pc(99) short viewDistance;
 		if (GlRenderer.enabled) {
-			local99 = (short) GlobalConfig.VIEW_DISTANCE;
+			viewDistance = (short) GlobalConfig.VIEW_DISTANCE;
 		} else {
-			local99 = 3500;
+			viewDistance = (short) GlobalConfig.VIEW_DISTANCE;
 		}
 		@Pc(104) int local104;
 		@Pc(113) int local113;
@@ -2940,15 +2973,15 @@ public class SceneGraph {
 						local176 = underwaterTileHeights[0][local146][local152] + 128 - anInt3947;
 					}
 					@Pc(201) int local201 = surfaceTileHeights[3][local146][local152] - anInt3947 - 1000;
-					aBooleanArrayArray3[local104][local113] = method3049(local130, local201, local176, local140, local99);
+					booleanArrayRelatingToVisibility2[local104][local113] = method3049(local130, local201, local176, local140, viewDistance);
 				} else {
-					aBooleanArrayArray3[local104][local113] = false;
+					booleanArrayRelatingToVisibility2[local104][local113] = false;
 				}
 			}
 		}
 		for (local104 = 0; local104 < visibility + visibility + 1; local104++) {
 			for (local113 = 0; local113 < visibility + visibility + 1; local113++) {
-				aBooleanArrayArray1[local104][local113] = aBooleanArrayArray3[local104][local113] || aBooleanArrayArray3[local104 + 1][local113] || aBooleanArrayArray3[local104][local113 + 1] || aBooleanArrayArray3[local104 + 1][local113 + 1];
+				booleanArrayRelatingToVisibility1[local104][local113] = booleanArrayRelatingToVisibility2[local104][local113] || booleanArrayRelatingToVisibility2[local104 + 1][local113] || booleanArrayRelatingToVisibility2[local104][local113 + 1] || booleanArrayRelatingToVisibility2[local104 + 1][local113 + 1];
 			}
 		}
 		anIntArray8 = arg6;
@@ -2988,7 +3021,7 @@ public class SceneGraph {
 				for (local37 = LightingManager.anInt4698; local37 < LightingManager.anInt4866; local37++) {
 					@Pc(46) Tile local46 = local30[local32][local37];
 					if (local46 != null) {
-						if (aBooleanArrayArray1[local32 + visibility - anInt4069][local37 + visibility - anInt4539] && (arg3 == null || local23 < arg4 || arg3[local23][local32][local37] != arg5)) {
+						if (booleanArrayRelatingToVisibility1[local32 + visibility - anInt4069][local37 + visibility - anInt4539] && (arg3 == null || local23 < arg4 || arg3[local23][local32][local37] != arg5)) {
 							local46.aBoolean45 = true;
 							local46.aBoolean46 = true;
 							local46.aBoolean47 = local46.sceneryLen > 0;
@@ -3068,7 +3101,7 @@ public class SceneGraph {
 					}
 					if (local32 == 0 && Preferences.sceneryShadowsType > 0) {
 						GlRenderer.method4159(101.5F);
-						ShadowManager.method4198(anInt4069, anInt4539, visibility, arg1, aBooleanArrayArray1, tileHeights[0]);
+						ShadowManager.method4198(anInt4069, anInt4539, visibility, arg1, booleanArrayRelatingToVisibility1, tileHeights[0]);
 					}
 					local32++;
 				}
@@ -4092,7 +4125,7 @@ public class SceneGraph {
 					}
 					local137 = false;
 					while (local115 <= local126) {
-						if (aBooleanArrayArray1[local14][local115++]) {
+						if (booleanArrayRelatingToVisibility1[local14][local115++]) {
 							local137 = true;
 							break;
 						}
@@ -4128,7 +4161,7 @@ public class SceneGraph {
 					}
 					local137 = false;
 					while (local115 <= local126) {
-						if (aBooleanArrayArray1[local115++][local14]) {
+						if (booleanArrayRelatingToVisibility1[local115++][local14]) {
 							local137 = true;
 							break;
 						}
@@ -4175,7 +4208,7 @@ public class SceneGraph {
 						label166:
 						for (@Pc(432) int local432 = local408; local432 <= local158; local432++) {
 							for (@Pc(437) int local437 = local115; local437 <= local126; local437++) {
-								if (aBooleanArrayArray1[local432][local437]) {
+								if (booleanArrayRelatingToVisibility1[local432][local437]) {
 									local430 = true;
 									break label166;
 								}
